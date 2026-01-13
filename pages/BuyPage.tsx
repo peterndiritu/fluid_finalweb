@@ -18,12 +18,16 @@ import {
   Info,
   Copy,
   Check,
-  ExternalLink
+  ExternalLink,
+  ChevronDown,
+  AlertCircle
 } from 'lucide-react';
 import { 
   useActiveAccount, 
   useActiveWalletChain, 
-  useReadContract 
+  useReadContract,
+  useWalletBalance,
+  useSwitchActiveWalletChain
 } from 'thirdweb/react';
 import { getContract, defineChain } from 'thirdweb';
 import { thirdwebClient } from '../client';
@@ -31,6 +35,7 @@ import { thirdwebClient } from '../client';
 // --- Configuration ---
 const PRESALE_CONTRACT_ADDRESS = "0xec9123Aa60651ceee7c0E084c884Cd33478c92a5";
 const PRIMARY_CHAIN_ID = 137; // Polygon Mainnet
+const USDT_POLYGON_ADDRESS = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
 
 const FluidTokenIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
@@ -48,6 +53,7 @@ const FluidTokenIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
 const BuyPage: React.FC = () => {
   const account = useActiveAccount();
   const activeChain = useActiveWalletChain();
+  const switchChain = useSwitchActiveWalletChain();
   const [activeTab, setActiveTab] = useState<'buy' | 'portfolio' | 'history'>('buy');
   const [copied, setCopied] = useState(false);
 
@@ -57,12 +63,23 @@ const BuyPage: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleSwitchNetwork = async () => {
+    try {
+      await switchChain(defineChain(PRIMARY_CHAIN_ID));
+    } catch (err) {
+      console.error("Failed to switch network:", err);
+    }
+  };
+
+  const contractChain = useMemo(() => activeChain || defineChain(PRIMARY_CHAIN_ID), [activeChain]);
+
   const contract = useMemo(() => getContract({
     client: thirdwebClient,
-    chain: activeChain || defineChain(PRIMARY_CHAIN_ID),
+    chain: contractChain,
     address: PRESALE_CONTRACT_ADDRESS,
-  }), [activeChain]);
+  }), [contractChain]);
 
+  // Contract Readings
   const { data: totalRaised, isLoading: loadingRaised, refetch: refetchRaised } = useReadContract({
     contract,
     method: "function totalRaised() view returns (uint256)",
@@ -81,10 +98,24 @@ const BuyPage: React.FC = () => {
     params: []
   });
 
-  const { data: userBalance, isLoading: loadingBalance, refetch: refetchBalance } = useReadContract({
+  const { data: userBalance, isLoading: loadingFluidBalance, refetch: refetchFluidBalance } = useReadContract({
     contract,
     method: "function balanceOf(address account) view returns (uint256)",
     params: [account?.address || "0x0000000000000000000000000000000000000000"]
+  });
+
+  // Wallet Balances
+  const { data: nativeBalance, isLoading: loadingNative, refetch: refetchNative } = useWalletBalance({
+    client: thirdwebClient,
+    chain: contractChain,
+    address: account?.address,
+  });
+
+  const { data: usdtBalance, isLoading: loadingUsdt, refetch: refetchUsdt } = useWalletBalance({
+    client: thirdwebClient,
+    chain: contractChain,
+    address: account?.address,
+    tokenAddress: contractChain.id === 137 ? USDT_POLYGON_ADDRESS : undefined,
   });
 
   const raisedValue = totalRaised ? Number(totalRaised) / 1e18 : 0;
@@ -92,22 +123,53 @@ const BuyPage: React.FC = () => {
   const progressPercent = Math.min((raisedValue / capValue) * 100, 100);
   const displayPrice = tokenPrice ? (Number(tokenPrice) / 1e18).toFixed(2) : "1.00";
 
+  const refreshAll = () => {
+    refetchRaised();
+    refetchFluidBalance();
+    refetchNative();
+    refetchUsdt();
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      refetchRaised();
-      refetchBalance();
-    }, 15000);
+    const interval = setInterval(refreshAll, 15000);
     return () => clearInterval(interval);
-  }, [refetchRaised, refetchBalance]);
+  }, []);
 
-  const portfolioItems = [
-    { name: 'Fluid Token', symbol: 'Fluid', balance: userBalance ? (Number(userBalance) / 1e18).toLocaleString() : '0.00', value: '$0.00', color: 'text-blue-400', isFluid: true },
-    { name: 'USDT', symbol: 'USDT', balance: '0.00', value: '$0.00', color: 'text-emerald-400', isFluid: false },
-  ];
+  const portfolioItems = useMemo(() => {
+    if (!account) return [];
+    return [
+      { 
+        name: 'Fluid Token', 
+        symbol: 'Fluid', 
+        balance: userBalance ? (Number(userBalance) / 1e18).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '0.00', 
+        value: '$0.00', 
+        color: 'text-blue-400', 
+        isFluid: true 
+      },
+      { 
+        name: nativeBalance?.symbol || 'POL', 
+        symbol: nativeBalance?.symbol || 'POL', 
+        balance: nativeBalance ? Number(nativeBalance.displayValue).toLocaleString(undefined, { maximumFractionDigits: 4 }) : '0.00', 
+        value: 'Native', 
+        color: 'text-purple-400', 
+        isFluid: false 
+      },
+      { 
+        name: 'USDT', 
+        symbol: 'USDT', 
+        balance: usdtBalance ? Number(usdtBalance.displayValue).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '0.00', 
+        value: `$${usdtBalance ? Number(usdtBalance.displayValue).toFixed(2) : '0.00'}`, 
+        color: 'text-emerald-400', 
+        isFluid: false 
+      },
+    ];
+  }, [account, userBalance, nativeBalance, usdtBalance]);
 
-  const explorerUrl = activeChain?.blockExplorers?.[0]?.url 
-    ? `${activeChain.blockExplorers[0].url}/address/${PRESALE_CONTRACT_ADDRESS}`
+  const explorerUrl = contractChain?.blockExplorers?.[0]?.url 
+    ? `${contractChain.blockExplorers[0].url}/address/${PRESALE_CONTRACT_ADDRESS}`
     : `https://polygonscan.com/address/${PRESALE_CONTRACT_ADDRESS}`;
+
+  const isWrongNetwork = account && activeChain?.id !== PRIMARY_CHAIN_ID;
 
   return (
     <div className="min-h-screen pt-28 pb-20 relative overflow-hidden bg-slate-950">
@@ -138,10 +200,27 @@ const BuyPage: React.FC = () => {
               </div>
               <div className="bg-slate-900/50 border border-slate-800 p-4 rounded-2xl min-w-[140px] backdrop-blur-md">
                  <div className="text-[10px] font-bold text-slate-500 uppercase mb-1">Status</div>
-                 <div className="text-lg font-bold text-emerald-400">ACTIVE</div>
+                 <div className={`text-lg font-bold ${isWrongNetwork ? 'text-amber-400' : 'text-emerald-400'}`}>
+                    {isWrongNetwork ? 'WRONG NETWORK' : 'ACTIVE'}
+                 </div>
               </div>
            </div>
         </header>
+
+        {isWrongNetwork && (
+          <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 animate-fade-in-up">
+             <div className="flex items-center gap-3">
+                <AlertCircle className="text-amber-500" size={24} />
+                <p className="text-sm font-bold text-amber-200">Please switch to Polygon Mainnet to participate in the presale.</p>
+             </div>
+             <button 
+                onClick={handleSwitchNetwork}
+                className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-xs transition-all shadow-lg"
+             >
+                Switch to Polygon
+             </button>
+          </div>
+        )}
 
         <div className="flex xl:hidden bg-slate-900/50 p-1.5 rounded-2xl border border-slate-800 mb-8 sticky top-24 z-30 backdrop-blur-xl">
            <button onClick={() => setActiveTab('buy')} className={`flex-1 py-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'buy' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400'}`}>
@@ -169,7 +248,9 @@ const BuyPage: React.FC = () => {
                         <p className="text-sm text-slate-500">Fluid Token presale is live on Polygon Mainnet.</p>
                      </div>
                      <div className="text-right">
-                        <span className="text-xs font-bold text-purple-400 bg-purple-400/10 px-3 py-1 rounded-full uppercase tracking-widest">Network: Polygon</span>
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest ${isWrongNetwork ? 'bg-red-400/10 text-red-400' : 'bg-purple-400/10 text-purple-400'}`}>
+                           Network: {activeChain?.name || "Polygon"}
+                        </span>
                      </div>
                   </div>
                   <div className="space-y-6">
@@ -223,9 +304,10 @@ const BuyPage: React.FC = () => {
                         </div>
                      </div>
                      <div>
-                        <div className="text-[10px] font-bold text-slate-500 uppercase mb-1">Primary Chain</div>
-                        <div className="text-xs font-bold text-white flex items-center gap-1">
-                          <Activity size={12} className="text-purple-400" /> {activeChain?.name || "Polygon"}
+                        <div className="text-[10px] font-bold text-slate-500 uppercase mb-1">Status</div>
+                        <div className={`text-xs font-bold flex items-center gap-1 ${isWrongNetwork ? 'text-amber-400' : 'text-emerald-400'}`}>
+                           {isWrongNetwork ? <AlertCircle size={12} /> : <CheckCircle2 size={12} />} 
+                           {isWrongNetwork ? 'Switch Req.' : 'Active'}
                         </div>
                      </div>
                      <div>
@@ -248,8 +330,8 @@ const BuyPage: React.FC = () => {
                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
                        <Wallet size={18} className="text-emerald-400" /> My Portfolio
                     </h3>
-                    <button onClick={() => { refetchBalance(); refetchRaised(); }} className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400">
-                       <RefreshCw size={14} className={loadingBalance ? "animate-spin" : ""} />
+                    <button onClick={refreshAll} className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400">
+                       <RefreshCw size={14} className={loadingFluidBalance || loadingNative || loadingUsdt ? "animate-spin" : ""} />
                     </button>
                  </div>
                  {!account ? (
@@ -263,7 +345,7 @@ const BuyPage: React.FC = () => {
                        <div className="bg-slate-950/80 p-6 rounded-3xl border border-slate-800">
                           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">My $Fluid Holdings</div>
                           <div className="text-3xl font-mono font-extrabold text-white flex items-center gap-2">
-                            {loadingBalance ? "..." : (Number(userBalance || 0) / 1e18).toLocaleString()}
+                            {loadingFluidBalance ? "..." : (Number(userBalance || 0) / 1e18).toLocaleString()}
                             <FluidTokenIcon className="w-5 h-5" />
                           </div>
                           <div className="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center">
@@ -271,7 +353,9 @@ const BuyPage: React.FC = () => {
                              <span className="text-sm font-bold text-emerald-400">100%</span>
                           </div>
                        </div>
+                       
                        <div className="space-y-3">
+                          <div className="px-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Balances on {activeChain?.name || "Network"}</div>
                           {portfolioItems.map((item, idx) => (
                              <div key={idx} className="flex justify-between items-center p-4 rounded-2xl bg-slate-950/50 border border-slate-800">
                                 <div className="flex items-center gap-3">
@@ -286,6 +370,15 @@ const BuyPage: React.FC = () => {
                                 <div className="text-right text-xs font-bold text-slate-300">{item.value}</div>
                              </div>
                           ))}
+                          
+                          {isWrongNetwork && (
+                            <button 
+                              onClick={handleSwitchNetwork}
+                              className="w-full mt-2 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-bold text-purple-400 uppercase tracking-widest transition-all"
+                            >
+                              Switch to Polygon for Portfolio Sync
+                            </button>
+                          )}
                        </div>
                     </div>
                  )}
