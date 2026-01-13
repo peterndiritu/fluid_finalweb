@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, Lightbulb, Wallet, Check, AlertCircle, Info, Loader2 } from 'lucide-react';
 import { 
-  useAccount, 
-  useWriteContract, 
-  useSwitchChain, 
-  useChainId,
-  useWaitForTransactionReceipt 
-} from 'wagmi';
-import { parseUnits, parseEther } from 'viem';
+  ConnectButton, 
+  useActiveAccount, 
+  useSendTransaction,
+  useActiveWalletChain
+} from 'thirdweb/react';
+import { 
+  getContract, 
+  prepareContractCall,
+  readContract,
+  toUnits,
+  toWei
+} from "thirdweb";
+import { defineChain } from "thirdweb/chains";
+import { thirdwebClient } from "../client";
 
 // --- Configuration ---
-const PRESALE_CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890" as `0x${string}`;
-const FALLBACK_FLUID_PRICE = 1.0; // Updated price: 1 USDT per FLUID
+const PRESALE_CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890";
+const FALLBACK_FLUID_PRICE = 1.0; // 1 USDT per FLUID
 
 interface PaymentOption {
   id: string;
@@ -21,33 +28,27 @@ interface PaymentOption {
   chainId: number;
   icon: string;
   isNative: boolean;
-  address?: `0x${string}`;
+  address?: string;
   decimals: number;
 }
 
 const PAYMENT_OPTIONS: PaymentOption[] = [
   { id: 'eth', symbol: 'ETH', name: 'Ethereum', network: 'ERC-20', chainId: 1, icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026', isNative: true, decimals: 18 },
   { id: 'bnb', symbol: 'BNB', name: 'BNB Smart Chain', network: 'BEP-20', chainId: 56, icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=026', isNative: true, decimals: 18 },
-  { id: 'usdt_eth', symbol: 'USDT', name: 'Tether', network: 'ERC-20', chainId: 1, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0xdAC17F958D2ee523a2206206994597C13D831ec7" as `0x${string}`, decimals: 6 },
-  { id: 'usdc_poly', symbol: 'USDC', name: 'USD Coin', network: 'Polygon', chainId: 137, icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026', isNative: false, address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" as `0x${string}`, decimals: 6 },
+  { id: 'usdt_eth', symbol: 'USDT', name: 'Tether', network: 'ERC-20', chainId: 1, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0xdAC17F958D2ee523a2206206994597C13D831ec7", decimals: 6 },
+  { id: 'usdc_poly', symbol: 'USDC', name: 'USD Coin', network: 'Polygon', chainId: 137, icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026', isNative: false, address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", decimals: 6 },
   { id: 'matic', symbol: 'MATIC', name: 'Polygon', network: 'Polygon', chainId: 137, icon: 'https://cryptologos.cc/logos/polygon-matic-logo.png?v=026', isNative: true, decimals: 18 },
 ];
 
 const PresaleCard: React.FC = () => {
-  const { isConnected } = useAccount();
-  const currentChainId = useChainId();
-  const { switchChain } = useSwitchChain();
-  const { writeContract, data: hash, isPending: isWritePending, error: writeError } = useWriteContract();
-  
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const account = useActiveAccount();
+  const activeChain = useActiveWalletChain();
+  const { mutate: sendTransaction, isPending: isTxPending, isSuccess: isConfirmed, error: txError } = useSendTransaction();
 
   const [selectedPayment, setSelectedPayment] = useState<PaymentOption>(PAYMENT_OPTIONS[0]);
   const [usdAmount, setUsdAmount] = useState<string>('100');
   const [cryptoPrice, setCryptoPrice] = useState<number>(0);
   const [fluidPrice] = useState<number>(FALLBACK_FLUID_PRICE);
-  const [showMore, setShowMore] = useState(false);
   
   const cryptoAmount = cryptoPrice > 0 && usdAmount ? parseFloat(usdAmount) / cryptoPrice : 0;
   const fluidAmount = usdAmount ? parseFloat(usdAmount) / fluidPrice : 0;
@@ -75,56 +76,38 @@ const PresaleCard: React.FC = () => {
   }, [selectedPayment]);
 
   const handleBuy = async () => {
-    if (!isConnected || !usdAmount) return;
+    if (!account || !usdAmount) return;
     
-    // 1. Check Network
-    if (currentChainId !== selectedPayment.chainId) {
-       switchChain({ chainId: selectedPayment.chainId });
-       return;
-    }
+    const chain = defineChain(selectedPayment.chainId);
+    const contract = getContract({
+      client: thirdwebClient,
+      chain: chain,
+      address: PRESALE_CONTRACT_ADDRESS,
+    });
 
     try {
+      let tx;
       if (selectedPayment.isNative) {
-        writeContract({
-          address: PRESALE_CONTRACT_ADDRESS,
-          abi: [
-            {
-              name: 'buyWithNative',
-              type: 'function',
-              stateMutability: 'payable',
-              inputs: [],
-              outputs: [],
-            },
-          ],
-          functionName: 'buyWithNative',
-          value: parseEther(cryptoAmount.toFixed(18)),
+        tx = prepareContractCall({
+          contract,
+          method: "function buyWithNative() payable",
+          params: [],
+          value: toWei(cryptoAmount.toFixed(18)),
         });
       } else {
-        // Simplified buy logic
-        writeContract({
-          address: PRESALE_CONTRACT_ADDRESS,
-          abi: [
-            {
-              name: 'buyWithToken',
-              type: 'function',
-              stateMutability: 'nonpayable',
-              inputs: [
-                { name: 'token', type: 'address' },
-                { name: 'amount', type: 'uint256' },
-              ],
-              outputs: [],
-            },
-          ],
-          functionName: 'buyWithToken',
-          args: [selectedPayment.address, parseUnits(cryptoAmount.toFixed(selectedPayment.decimals), selectedPayment.decimals)],
+        tx = prepareContractCall({
+          contract,
+          method: "function buyWithToken(address token, uint256 amount)",
+          params: [selectedPayment.address as string, toUnits(cryptoAmount.toFixed(selectedPayment.decimals), selectedPayment.decimals)],
         });
       }
+      sendTransaction(tx);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const status = isWritePending || isConfirming ? 'PENDING' : (isConfirmed ? 'SUCCESS' : (writeError ? 'ERROR' : 'IDLE'));
+  const isPending = isTxPending;
 
   return (
     <div className="w-full max-w-[480px] mx-auto z-10">
@@ -160,7 +143,7 @@ const PresaleCard: React.FC = () => {
                             className={`relative flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 group ${
                                 selectedPayment.id === opt.id 
                                 ? 'bg-white/10 border-lime-500/50 shadow-[0_0_15px_rgba(132,204,22,0.15)]' 
-                                : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10'
+                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/10'
                             }`}
                         >
                             <img src={opt.icon} alt={opt.symbol} className="w-8 h-8 rounded-full mb-1.5 shadow-sm" />
@@ -215,29 +198,29 @@ const PresaleCard: React.FC = () => {
             </div>
 
             <div className="pt-2">
-                {!isConnected ? (
+                {!account ? (
                     <div className="flex justify-center">
-                        <appkit-button />
+                        <ConnectButton client={thirdwebClient} theme="dark" />
                     </div>
                 ) : (
                     <button
                         onClick={handleBuy}
-                        disabled={status === 'PENDING'}
+                        disabled={isPending}
                         className="w-full py-4 rounded-xl text-lg font-bold bg-gradient-to-r from-lime-400 to-green-500 text-slate-900 hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2"
                     >
-                        {status === 'PENDING' ? <Loader2 size={20} className="animate-spin" /> : <Wallet size={20} />}
-                        {status === 'PENDING' ? 'Confirming...' : 'Buy Tokens'}
+                        {isPending ? <Loader2 size={20} className="animate-spin" /> : <Wallet size={20} />}
+                        {isPending ? 'Confirming...' : 'Buy Tokens'}
                     </button>
                 )}
             </div>
             
-            {status === 'SUCCESS' && (
+            {isConfirmed && (
                 <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3 animate-fade-in-up">
                     <Check size={18} className="text-emerald-500" />
                     <p className="text-xs text-emerald-200">Purchase successful! Tokens will be airdropped.</p>
                 </div>
             )}
-            {status === 'ERROR' && (
+            {txError && (
                 <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center gap-3 animate-fade-in-up">
                     <AlertCircle size={18} className="text-red-500" />
                     <p className="text-xs text-red-200">Transaction failed. Try again.</p>

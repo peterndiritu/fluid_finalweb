@@ -18,7 +18,7 @@
     "thirdweb": "5.54.0",
     "canvas-confetti": "1.9.2",
     "@reown/appkit": "^1.8.16",
-    "@reown/appkit-adapter-wagmi": "1.1.0",
+    "@reown/appkit-adapter-wagmi": "1.1.9",
     "wagmi": "2.12.7",
     "@wagmi/core": "2.13.4",
     "viem": "2.21.0",

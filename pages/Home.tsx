@@ -149,7 +149,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Proportional Yield.</span>
                         </h2>
                         <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                           Fluid eliminates complex tiers. We believe in fair distribution: 40% of all platform revenue—hosting fees, trading volume, and card spreads—is redistributed directly to $FLUID stakers. Every token earns the exact same share.
+                           Fluid eliminates complex tiers. We believe in fair distribution: 40% of all platform revenue—hosting fees, trading volume, and card spreads—is redistributed directly to $FLUID stakers. Every token earns the exact same share of the unified reward pool.
                         </p>
                         
                         <div className="grid sm:grid-cols-2 gap-6 mb-10">

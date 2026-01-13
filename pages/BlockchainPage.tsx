@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Zap, Shield, Layers, Code2, Globe, Cpu, CheckCircle, Wifi, Copy, Check, Wallet } from 'lucide-react';
+import { ConnectButton } from "thirdweb/react";
+import { thirdwebClient } from "../client";
 
 const BlockchainPage: React.FC = () => {
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -225,9 +227,11 @@ const BlockchainPage: React.FC = () => {
                </div>
 
                <div className="mt-6 flex flex-col gap-3">
-                  <button className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-white dark:text-slate-900 font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
-                     <Wallet size={18} /> Connect MetaMask
-                  </button>
+                  <ConnectButton 
+                    client={thirdwebClient} 
+                    theme="dark"
+                    connectButton={{ label: "Connect MetaMask", style: { width: '100%', padding: '0.75rem' } }}
+                  />
                   <button className="w-full py-3 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold rounded-xl border border-slate-200 dark:border-slate-700 hover:border-cyan-500 dark:hover:border-cyan-400 transition-colors">
                      Add Network to Wallet
                   </button>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { ConnectButton } from "thirdweb/react";
+import { thirdwebClient } from "../client";
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -160,8 +162,12 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <div className="h-6 w-px bg-slate-300 dark:bg-slate-800 mx-1"></div>
-            {/* Reown AppKit Button */}
-            <appkit-button size="sm" balance="hide" />
+            {/* Thirdweb Connect Button */}
+            <ConnectButton 
+              client={thirdwebClient}
+              theme={theme === 'dark' ? 'dark' : 'light'}
+              connectButton={{ label: "Connect", style: { borderRadius: '0.75rem', fontSize: '12px', padding: '0.5rem 1rem' } }}
+            />
           </div>
 
           {/* Mobile menu button */}
@@ -233,7 +239,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
 
             <div className="border-t border-slate-200 dark:border-white/10 my-4 pt-6 space-y-4">
               <div className="flex justify-center">
-                <appkit-button />
+                <ConnectButton client={thirdwebClient} theme={theme === 'dark' ? 'dark' : 'light'} />
               </div>
               <button 
                 onClick={() => handleLinkClick('buy')}
