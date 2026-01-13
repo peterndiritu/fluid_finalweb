@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Download, Mail, Facebook, Send, Twitter } from 'lucide-react';
+import { Download, Mail, Facebook, Send, Twitter, LifeBuoy } from 'lucide-react';
 import FluidLogo from './FluidLogo';
 
 interface FooterProps {
@@ -146,13 +147,19 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-8 order-2 md:order-1">
+          <div className="flex items-center gap-6 md:gap-8 order-2 md:order-1">
             <p className="text-slate-500 text-xs">© {currentYear} Fluid Finance. All rights reserved.</p>
             <button 
               onClick={handleDownloadLogo}
               className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white hover:text-blue-500 transition-colors"
             >
               <Download size={14} /> Brand Kit
+            </button>
+            <button 
+              onClick={() => handleLink('support')}
+              className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white hover:text-blue-500 transition-colors"
+            >
+              <LifeBuoy size={14} /> Support Center
             </button>
           </div>
           
