@@ -1,175 +1,200 @@
-import React, { useState } from 'react';
-import { Zap, Shield, Layers, Code2, Globe, Cpu, CheckCircle, Wifi, Copy, Check, Wallet } from 'lucide-react';
-import { ConnectButton } from "thirdweb/react";
-import { thirdwebClient } from "../client";
+import React from 'react';
+import { Zap, Shield, Layers, Code2, Globe, Cpu, CheckCircle, Wifi, Terminal, Database, ArrowRight, Activity, Clock, BarChart3, Binary, Network } from 'lucide-react';
 
 const BlockchainPage: React.FC = () => {
-  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const innovations = [
+    {
+      title: "Dynamic Sharding",
+      desc: "The network automatically partitions into shards based on load, allowing for linear scalability and consistent performance.",
+      icon: Layers,
+      color: "text-blue-400"
+    },
+    {
+      title: "EVM Compatibility",
+      desc: "Deploy existing Ethereum smart contracts instantly with no code changes required. Full support for Solidity and Vyper.",
+      icon: Code2,
+      color: "text-purple-400"
+    },
+    {
+      title: "Proof of Fluidity",
+      desc: "A novel consensus mechanism combining Proof-of-Stake with Proof-of-History for sub-second validation.",
+      icon: Shield,
+      color: "text-emerald-400"
+    },
+    {
+      title: "Parallel Execution",
+      desc: "Transactions are processed in parallel, utilizing multi-core architectures for maximum network throughput.",
+      icon: Cpu,
+      color: "text-cyan-400"
+    },
+    {
+      title: "Global State Sync",
+      desc: "Advanced gossip protocols ensure the global state is synchronized across all 150+ nodes in milliseconds.",
+      icon: RefreshCwIcon,
+      color: "text-indigo-400"
+    },
+    {
+      title: "Native Oracles",
+      desc: "Built-in oracle services provide reliable real-world data feeds directly to smart contracts without third-party fees.",
+      icon: Database,
+      color: "text-amber-400"
+    }
+  ];
 
-  const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedField(field);
-    setTimeout(() => setCopiedField(null), 2000);
-  };
+  const comparisonData = [
+    { metric: "Throughput (TPS)", fluid: "2,000,000+", eth: "~30", solana: "~65,000" },
+    { metric: "Finality", fluid: "~600ms", eth: "~12 min", solana: "~400ms" },
+    { metric: "Avg. Fee", fluid: "$0.0001", eth: "$5.00+", solana: "$0.0002" },
+  ];
 
   return (
     <div className="min-h-screen pt-28 pb-16">
-      
-      {/* Hero */}
-      <section className="text-center px-4 mb-24">
-        <div className="inline-block px-4 py-2 rounded-full bg-purple-600/10 border border-purple-600/30 mb-6">
-           <span className="text-purple-500 font-bold uppercase tracking-wider text-sm">Powered by Polygon</span>
+      {/* Hero Section */}
+      <section className="text-center px-4 mb-24 relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20">
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-500 rounded-full blur-[150px]"></div>
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-emerald-500 rounded-full blur-[150px]"></div>
         </div>
-        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-6">
-           Liquid Assets on the <br/>
-           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-400">Polygon Network</span>
-        </h1>
-        <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-           Fluid integrates directly with Polygon Mainnet to provide sub-second transaction speeds, negligible gas fees, and enterprise-grade security.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-             <button className="px-8 py-4 bg-purple-600 text-white font-bold rounded-full hover:bg-purple-500 transition-colors shadow-lg shadow-purple-500/25">
-                Start Building
-             </button>
-             <button className="px-8 py-4 bg-transparent border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-bold rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                View on PolygonScan
-             </button>
-        </div>
-      </section>
 
-      {/* Key Stats */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-               <div className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2">65k+</div>
-               <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">Network TPS</div>
-            </div>
-            <div className="text-center p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-               <div className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2">~2s</div>
-               <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">Block Time</div>
-            </div>
-            <div className="text-center p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-               <div className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2">&lt;$0.01</div>
-               <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">Avg Gas Fee</div>
-            </div>
-            <div className="text-center p-6 bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-               <div className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2">100%</div>
-               <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">EVM Native</div>
-            </div>
-         </div>
-      </section>
-
-      {/* Architecture Features */}
-      <section className="bg-white dark:bg-slate-900/50 py-24 border-y border-slate-200 dark:border-slate-800 mb-24">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-extrabold text-center mb-16 text-slate-900 dark:text-white">Fluid & Polygon Synergy</h2>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-               {/* Feature 1 */}
-               <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 transition-all group">
-                  <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 text-purple-500 group-hover:scale-110 transition-transform">
-                     <Layers size={24} />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Scalable Infrastructure</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                     By leveraging Polygon's proof-of-stake architecture, Fluid achieves institutional-grade throughput while maintaining low entry costs for users.
-                  </p>
-               </div>
-
-               {/* Feature 2 */}
-               <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-purple-500/50 transition-all group">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6 text-emerald-500 group-hover:scale-110 transition-transform">
-                     <Code2 size={24} />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Seamless EVM Dev</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                     Full compatibility with Ethereum tools. Fluid dApps run on the Polygon Virtual Machine with no specialized code required.
-                  </p>
-               </div>
-
-               {/* Feature 3 */}
-               <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-800 hover:border-purple-500/50 transition-all group">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-500 group-hover:scale-110 transition-transform">
-                     <Shield size={24} />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white">Secured by Polygon</h3>
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                     Inherit the security of the Polygon network, one of the most battle-tested and widely adopted proof-of-stake chains in existence.
-                  </p>
-               </div>
-            </div>
-         </div>
-      </section>
-
-      {/* Quick Connect Section */}
-      <section className="py-12 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mb-24">
-         <div className="max-w-xl mx-auto px-4">
-            <div className="flex items-center gap-2 mb-6">
-               <Wifi className="text-purple-400" />
-               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Network Settings</h2>
-            </div>
-            
-            <div className="bg-white dark:bg-slate-950 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 relative shadow-lg">
-               <div className="absolute top-6 right-6">
-                  <span className="px-3 py-1 bg-purple-500 text-white text-xs font-bold rounded-full">Mainnet</span>
-               </div>
-               
-               <div className="space-y-4 text-sm">
-                  <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
-                     <span className="text-slate-500 dark:text-slate-400">Network Name</span>
-                     <span className="text-slate-900 dark:text-white font-medium">Polygon Mainnet</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800 group cursor-pointer" onClick={() => copyToClipboard('https://polygon-rpc.com', 'rpc')}>
-                     <span className="text-slate-500 dark:text-slate-400">RPC URL</span>
-                     <div className="flex items-center gap-2">
-                        <span className="text-purple-600 dark:text-purple-400 font-medium truncate max-w-[150px]">https://polygon-rpc.com</span>
-                        {copiedField === 'rpc' ? <Check size={14} className="text-emerald-500"/> : <Copy size={14} className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white"/>}
-                     </div>
-                  </div>
-
-                  <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
-                     <span className="text-slate-500 dark:text-slate-400">Chain ID</span>
-                     <span className="text-slate-900 dark:text-white font-medium">137</span>
-                  </div>
-
-                  <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
-                     <span className="text-slate-500 dark:text-slate-400">Currency Symbol</span>
-                     <span className="text-slate-900 dark:text-white font-medium">POL</span>
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                     <span className="text-slate-500 dark:text-slate-400">Block Explorer</span>
-                     <span className="text-purple-600 dark:text-purple-400 underline decoration-purple-400/30">https://polygonscan.com</span>
-                  </div>
-               </div>
-
-               <div className="mt-6 flex flex-col gap-3">
-                  <ConnectButton 
-                    client={thirdwebClient} 
-                    theme="dark"
-                    connectButton={{ label: "Connect to Polygon", style: { width: '100%', padding: '0.75rem' } }}
-                  />
-               </div>
-            </div>
-         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="text-center px-4">
-          <div className="bg-gradient-to-r from-purple-600 to-blue-500 rounded-3xl p-12 max-w-4xl mx-auto shadow-2xl">
-             <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-6">Join the Polygon Revolution</h2>
-             <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Fluid is scaling the future of finance and storage on the world's most accessible blockchain.
-             </p>
-             <button className="px-10 py-4 bg-white text-purple-600 font-bold rounded-full hover:bg-purple-50 transition-colors shadow-lg">
-                View Fluid Ecosystem
-             </button>
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 mb-6">
+            <Activity size={16} className="text-blue-400 animate-pulse" />
+            <span className="text-blue-400 font-bold uppercase tracking-wider text-xs">Layer-1 under Development</span>
           </div>
+          <h1 className="text-5xl md:text-8xl font-extrabold text-white mb-6 tracking-tighter leading-none">
+            The backbone of the <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">New internet</span>
+          </h1>
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-12 font-medium">
+            Fluid Chain is a high-performance Layer-1 blockchain designed for infinite scalability, sub-second finality, and zero-downtime decentralized hosting.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button className="px-10 py-5 bg-white text-slate-950 font-bold rounded-2xl text-lg hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+              Start building
+            </button>
+            <button className="px-10 py-5 bg-slate-900 text-white border border-slate-800 font-bold rounded-2xl text-lg hover:bg-slate-800 transition-all">
+              Read whitepaper
+            </button>
+          </div>
+        </div>
       </section>
 
+      {/* Network Stats */}
+      <section className="max-w-7xl mx-auto px-4 mb-32">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl group hover:border-blue-500/30 transition-all">
+            <div className="text-4xl font-mono font-extrabold text-white mb-1 group-hover:text-blue-400 transition-colors">2M+</div>
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">TPS capacity</div>
+          </div>
+          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl group hover:border-cyan-500/30 transition-all">
+            <div className="text-4xl font-mono font-extrabold text-white mb-1 group-hover:text-cyan-400 transition-colors">~600ms</div>
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Time to finality</div>
+          </div>
+          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl group hover:border-emerald-500/30 transition-all">
+            <div className="text-4xl font-mono font-extrabold text-white mb-1 group-hover:text-emerald-400 transition-colors">$0.0001</div>
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Avg fee</div>
+          </div>
+          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl group hover:border-indigo-500/30 transition-all">
+            <div className="text-4xl font-mono font-extrabold text-white mb-1 group-hover:text-indigo-400 transition-colors">150+</div>
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Global nodes</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Technical Innovations */}
+      <section className="max-w-7xl mx-auto px-4 mb-32">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-extrabold text-white mb-4">Technical innovations</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">Pushing the boundaries of decentralized computing architecture.</p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {innovations.map((item, idx) => (
+            <div key={idx} className="p-10 bg-slate-900/40 border border-slate-800 rounded-[2.5rem] hover:border-blue-500/20 transition-all group">
+              <div className={`w-14 h-14 bg-slate-950 rounded-2xl flex items-center justify-center mb-6 ${item.color} group-hover:scale-110 transition-transform shadow-inner`}>
+                <item.icon size={28} />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
+              <p className="text-slate-500 leading-relaxed font-medium">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Performance Comparison */}
+      <section className="max-w-7xl mx-auto px-4 mb-32">
+        <div className="bg-slate-900/40 border border-slate-800 rounded-[3rem] p-8 md:p-16 backdrop-blur-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-10 opacity-5">
+            <BarChart3 size={200} />
+          </div>
+          
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-extrabold text-white mb-4">Performance comparison</h2>
+            <p className="text-slate-400">How Fluid Chain stacks up against industry standards.</p>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-800 text-slate-500 font-bold text-xs uppercase tracking-[0.2em]">
+                  <th className="py-6 px-4">Metric</th>
+                  <th className="py-6 px-4 text-white">Fluid Chain</th>
+                  <th className="py-6 px-4">Ethereum</th>
+                  <th className="py-6 px-4">Solana</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, idx) => (
+                  <tr key={idx} className="border-b border-slate-800/50 group hover:bg-white/5 transition-colors">
+                    <td className="py-8 px-4 font-bold text-slate-400">{row.metric}</td>
+                    <td className="py-8 px-4 font-mono font-extrabold text-blue-400 text-lg">{row.fluid}</td>
+                    <td className="py-8 px-4 font-mono text-slate-500">{row.eth}</td>
+                    <td className="py-8 px-4 font-mono text-slate-500">{row.solana}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="text-center px-4 relative">
+        <div className="max-w-5xl mx-auto py-24 px-8 bg-gradient-to-br from-blue-600/10 to-emerald-500/10 border border-white/5 rounded-[3rem] relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-12 opacity-10">
+            <Terminal size={120} />
+          </div>
+          <h2 className="text-4xl font-extrabold text-white mb-6">Ready to build the future?</h2>
+          <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
+            Join thousands of developers building the next generation of decentralized applications on Fluid Chain.
+          </p>
+          <button className="px-10 py-4 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-2xl transition-all shadow-xl shadow-blue-500/20 flex items-center gap-3 mx-auto">
+            Developer documentation <ArrowRight size={20} />
+          </button>
+        </div>
+      </section>
     </div>
   );
 };
+
+// Helper for the missing icon in the list
+const RefreshCwIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+    <path d="M21 3v5h-5" />
+    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+    <path d="M3 21v-5h5" />
+  </svg>
+);
 
 export default BlockchainPage;

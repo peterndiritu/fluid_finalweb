@@ -8,9 +8,9 @@ export const thirdwebClient = createThirdwebClient({
   clientId: clientId,
 });
 
-// Common chains - Polygon is the primary chain for Fluid
-export const polygon = defineChain(137);
+// Common chains - Ethereum and BSC are used for cross-chain liquidity
 export const ethereum = defineChain(1);
 export const bsc = defineChain(56);
 
-export const networks = [polygon, ethereum, bsc];
+// Note: Fluid Chain L1 Mainnet is currently under development
+export const networks = [ethereum, bsc];

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Download, Mail, Facebook, Send, Twitter } from 'lucide-react';
+import FluidLogo from './FluidLogo';
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -100,20 +101,11 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => handleLink('home')}>
-               <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="footerBrandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3b82f6" />
-                      <stop offset="100%" stopColor="#10b981" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#footerBrandGrad)" />
-                  <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#footerBrandGrad)" />
-               </svg>
+               <FluidLogo size={32} />
                <span className="font-bold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">Fluid</span>
             </div>
             <p className="text-slate-500 text-sm mb-6 leading-relaxed max-w-xs">
-              Scaling the future of finance with institutional-grade blockchain infrastructure and permanent web hosting.
+              Scaling the future of finance with institutional-grade L1 blockchain infrastructure and permanent web hosting.
             </p>
             <div className="flex gap-4">
                {socialLinks.map((social) => (
@@ -167,7 +159,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-6 order-1 md:order-2">
              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-bold uppercase tracking-widest">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                Systems Operational
+                Fluid L1 Nodes Operational
              </div>
           </div>
         </div>

@@ -16,23 +16,11 @@ import {
 import { defineChain } from "thirdweb/chains";
 import { createWallet } from "thirdweb/wallets";
 import { thirdwebClient } from "../client";
+import FluidLogo from './FluidLogo';
 
 // --- Configuration ---
 const PRESALE_CONTRACT_ADDRESS = "0xec9123Aa60651ceee7c0E084c884Cd33478c92a5";
 const FALLBACK_FLUID_PRICE = 1.0; // 1 USDT per FLUID
-
-const FluidTokenIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
-  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="tokenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#3b82f6" />
-        <stop offset="100%" stopColor="#10b981" />
-      </linearGradient>
-    </defs>
-    <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#tokenGrad)" />
-    <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#tokenGrad)" />
-  </svg>
-);
 
 interface PaymentToken {
   id: string;
@@ -54,17 +42,6 @@ interface NetworkOption {
 }
 
 const NETWORKS: NetworkOption[] = [
-  {
-    id: 137,
-    name: "Polygon",
-    symbol: "POL",
-    icon: "https://cryptologos.cc/logos/polygon-matic-logo.png?v=026",
-    tokens: [
-      { id: 'matic', symbol: 'POL', name: 'Polygon', chainId: 137, icon: 'https://cryptologos.cc/logos/polygon-matic-logo.png?v=026', isNative: true, decimals: 18 },
-      { id: 'usdc_poly', symbol: 'USDC', name: 'USD Coin', chainId: 137, icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026', isNative: false, address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", decimals: 6 },
-      { id: 'usdt_poly', symbol: 'USDT', name: 'Tether', chainId: 137, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", decimals: 6 },
-    ]
-  },
   {
     id: 1,
     name: "Ethereum",
@@ -135,15 +112,12 @@ const PresaleCard: React.FC = () => {
           setCryptoPrice(1);
           return;
         }
-        // Binance uses MATIC ticker for Polygon's native token mostly
-        const ticker = symbol === 'POL' ? 'MATIC' : symbol;
-        const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${ticker}USDT`);
+        const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}USDT`);
         const data = await res.json();
         if (data.price) setCryptoPrice(parseFloat(data.price));
       } catch (e) {
         if (selectedToken.symbol === 'ETH') setCryptoPrice(3200);
         if (selectedToken.symbol === 'BNB') setCryptoPrice(600);
-        if (selectedToken.symbol === 'POL') setCryptoPrice(0.70);
       }
     };
     fetchPrice();
@@ -190,47 +164,48 @@ const PresaleCard: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[480px] mx-auto z-10">
-      <div className="bg-slate-950/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-300">
+    <div className="w-full max-w-[500px] mx-auto z-10">
+      <div className="bg-slate-950/80 backdrop-blur-3xl border border-white/10 rounded-[3rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] transition-all duration-500">
         
-        <div className="p-8 border-b border-white/5 flex flex-col items-center bg-gradient-to-b from-white/5 to-transparent">
+        <div className="p-10 border-b border-white/5 flex flex-col items-center bg-gradient-to-b from-white/10 to-transparent">
             <h2 className="text-3xl font-extrabold text-white tracking-tight">Purchase $Fluid</h2>
-            <div className="flex items-center gap-2 mt-3">
+            <div className="flex items-center gap-2 mt-4">
                 <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                 </span>
-                <span className="text-emerald-400 text-[10px] font-bold uppercase tracking-[0.2em]">
-                   Polygon Mainnet Pool Active
+                <span className="text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+                   Infrastructure Round 1
                 </span>
             </div>
         </div>
 
-        <div className="p-8 space-y-8">
-            <div className="space-y-5">
-                <div className="space-y-2">
-                    <div className="flex justify-between items-end px-1">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Amount in USD</label>
-                      <span className="text-[10px] font-mono text-slate-400">Rate: 1 {selectedToken.symbol} ≈ ${cryptoPrice.toLocaleString()}</span>
+        <div className="p-10 space-y-10">
+            <div className="space-y-6">
+                {/* Input Section */}
+                <div className="space-y-3">
+                    <div className="flex justify-between items-center px-1">
+                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Amount in USD</label>
+                      <span className="text-[10px] font-mono text-slate-500 bg-white/5 px-2 py-0.5 rounded">Rate: 1 {selectedToken.symbol} ≈ ${cryptoPrice.toLocaleString()}</span>
                     </div>
                     <div className="relative group" ref={dropdownRef}>
                         <input 
                             type="number"
                             value={usdAmount}
                             onChange={(e) => setUsdAmount(e.target.value)}
-                            className="w-full bg-slate-900/40 border border-white/10 rounded-3xl py-6 pl-6 pr-44 text-3xl font-bold text-white placeholder-slate-700 focus:outline-none focus:border-lime-500/30 transition-all shadow-inner"
+                            className="w-full bg-slate-900/40 border border-white/10 rounded-[2rem] py-7 pl-8 pr-48 text-4xl font-extrabold text-white placeholder-slate-800 focus:outline-none focus:border-blue-500/40 transition-all shadow-inner"
                             placeholder="0.00"
                         />
                         
-                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
                           <button 
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 px-4 py-3 rounded-2xl border border-white/10 transition-all group active:scale-95"
+                            className="flex items-center gap-3 bg-white/5 hover:bg-white/10 px-5 py-4 rounded-2xl border border-white/10 transition-all group active:scale-95 shadow-xl"
                           >
-                            <img src={selectedToken.icon} className="w-7 h-7 rounded-full shadow-lg" alt={selectedToken.symbol} />
+                            <img src={selectedToken.icon} className="w-8 h-8 rounded-full shadow-lg" alt={selectedToken.symbol} />
                             <div className="text-left">
                                 <div className="text-xs font-bold text-white leading-none">{selectedToken.symbol}</div>
-                                <div className="text-[10px] text-slate-500 font-mono leading-none mt-1.5">
+                                <div className="text-[10px] text-slate-500 font-mono leading-none mt-2">
                                     {cryptoAmount.toFixed(selectedToken.decimals > 8 ? 4 : 2)}
                                 </div>
                             </div>
@@ -238,11 +213,11 @@ const PresaleCard: React.FC = () => {
                           </button>
 
                           {isDropdownOpen && (
-                            <div className="absolute right-0 top-full mt-3 w-64 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 animate-fade-in-up">
+                            <div className="absolute right-0 top-full mt-4 w-72 bg-slate-900/95 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-[0_32px_64px_rgba(0,0,0,0.8)] overflow-hidden z-50 animate-fade-in-up">
                               {selectorView === 'network' ? (
-                                <div className="p-3">
-                                  <div className="px-3 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-white/5 mb-2">Select Network</div>
-                                  <div className="space-y-1">
+                                <div className="p-4">
+                                  <div className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] border-b border-white/5 mb-3">Choose Network</div>
+                                  <div className="space-y-1.5">
                                     {NETWORKS.map((net) => (
                                       <button
                                         key={net.id}
@@ -250,14 +225,14 @@ const PresaleCard: React.FC = () => {
                                           setSelectedNetwork(net);
                                           setSelectorView('token');
                                         }}
-                                        className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all group ${
+                                        className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all group ${
                                           selectedNetwork.id === net.id 
                                           ? 'bg-white/10 border border-white/10' 
                                           : 'hover:bg-white/5 border border-transparent'
                                         }`}
                                       >
-                                        <div className="flex items-center gap-3">
-                                          <img src={net.icon} className="w-6 h-6 rounded-full" alt={net.name} />
+                                        <div className="flex items-center gap-4">
+                                          <img src={net.icon} className="w-7 h-7 rounded-full" alt={net.name} />
                                           <span className="text-sm font-bold text-white group-hover:translate-x-1 transition-transform">{net.name}</span>
                                         </div>
                                         <ChevronRight size={14} className="text-slate-500" />
@@ -266,14 +241,14 @@ const PresaleCard: React.FC = () => {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="p-3">
+                                <div className="p-4">
                                   <button 
                                     onClick={() => setSelectorView('network')}
-                                    className="flex items-center gap-2 px-3 py-2 text-[10px] font-bold text-lime-400 uppercase tracking-widest hover:bg-white/5 rounded-lg mb-2 transition-colors"
+                                    className="flex items-center gap-2 px-4 py-3 text-[10px] font-bold text-blue-400 uppercase tracking-widest hover:bg-white/5 rounded-xl mb-3 transition-colors"
                                   >
-                                    <ChevronLeft size={12} /> Back to Networks
+                                    <ChevronLeft size={12} /> Change Network
                                   </button>
-                                  <div className="space-y-1">
+                                  <div className="space-y-1.5">
                                     {selectedNetwork.tokens.map((token) => (
                                       <button
                                         key={token.id}
@@ -282,20 +257,20 @@ const PresaleCard: React.FC = () => {
                                           setIsDropdownOpen(false);
                                           setSelectorView('network');
                                         }}
-                                        className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all ${
+                                        className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${
                                           selectedToken.id === token.id 
-                                          ? 'bg-lime-500/10 border border-lime-500/20' 
+                                          ? 'bg-blue-500/10 border border-blue-500/20' 
                                           : 'hover:bg-white/5 border border-transparent'
                                         }`}
                                       >
-                                        <div className="flex items-center gap-3">
-                                          <img src={token.icon} className="w-6 h-6 rounded-full" alt={token.symbol} />
+                                        <div className="flex items-center gap-4">
+                                          <img src={token.icon} className="w-7 h-7 rounded-full" alt={token.symbol} />
                                           <div className="text-left">
                                             <div className="text-sm font-bold text-white">{token.symbol}</div>
                                             <div className="text-[10px] text-slate-500">{token.name}</div>
                                           </div>
                                         </div>
-                                        {selectedToken.id === token.id && <Check size={14} className="text-lime-500" />}
+                                        {selectedToken.id === token.id && <Check size={16} className="text-blue-500" />}
                                       </button>
                                     ))}
                                   </div>
@@ -307,24 +282,26 @@ const PresaleCard: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-500 ml-1 uppercase tracking-wider">You Receive ($Fluid)</label>
+                {/* Output Section */}
+                <div className="space-y-3">
+                    <label className="text-[10px] font-bold text-slate-500 ml-1 uppercase tracking-widest">Estimated $Fluid Allocation</label>
                     <div className="relative">
-                        <div className="w-full bg-slate-900/40 border border-white/10 rounded-3xl py-6 pl-6 pr-32 text-3xl font-bold text-emerald-400 cursor-default shadow-inner">
+                        <div className="w-full bg-slate-900/40 border border-white/10 rounded-[2rem] py-7 pl-8 pr-32 text-4xl font-extrabold text-emerald-400 cursor-default shadow-inner">
                             {fluidAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                         </div>
-                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-3 bg-emerald-500/10 px-5 py-3 rounded-2xl border border-emerald-500/20">
-                            <FluidTokenIcon className="w-7 h-7" />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-3 bg-emerald-500/10 px-6 py-4 rounded-2xl border border-emerald-500/20 shadow-lg">
+                            <FluidLogo className="w-8 h-8" />
                             <span className="text-xs font-bold text-emerald-400 tracking-wider">Fluid</span>
                         </div>
                     </div>
-                    <div className="flex justify-between px-1 text-[10px] font-medium text-slate-500">
-                        <span>Launch Listing: $1.50</span>
-                        <span className="flex items-center gap-1"><Info size={10} /> 1 Fluid = ${fluidPrice.toFixed(2)} USD</span>
+                    <div className="flex justify-between px-2 text-[10px] font-bold text-slate-500">
+                        <span className="text-blue-400/80">Listing Price: $1.50</span>
+                        <span className="flex items-center gap-1.5 uppercase tracking-tighter"><Info size={12} className="text-slate-600"/> 1 Fluid = ${fluidPrice.toFixed(2)} USD</span>
                     </div>
                 </div>
             </div>
 
+            {/* Action Section */}
             <div className="pt-2">
                 {!account ? (
                     <div className="flex justify-center connect-btn-wrapper">
@@ -333,15 +310,16 @@ const PresaleCard: React.FC = () => {
                           theme="dark" 
                           wallets={wallets}
                           connectButton={{ 
-                            label: "Connect Wallet", 
+                            label: "Connect to Purchase", 
                             style: { 
                               width: '100%', 
-                              borderRadius: '1.5rem', 
-                              padding: '1.25rem',
-                              background: 'linear-gradient(to right, #84cc16, #22c55e)',
-                              color: '#020617',
+                              borderRadius: '2rem', 
+                              padding: '1.5rem',
+                              background: 'linear-gradient(to right, #3b82f6, #06b6d4)',
+                              color: '#ffffff',
                               fontWeight: 'bold',
-                              fontSize: '1.125rem'
+                              fontSize: '1.125rem',
+                              boxShadow: '0 20px 40px -12px rgba(59, 130, 246, 0.4)'
                             }
                           }}
                         />
@@ -350,41 +328,45 @@ const PresaleCard: React.FC = () => {
                     <button
                         onClick={handleBuy}
                         disabled={isTxPending}
-                        className="w-full py-5 rounded-3xl text-lg font-bold bg-gradient-to-r from-lime-400 to-green-500 text-slate-900 hover:brightness-110 active:scale-[0.98] transition-all shadow-xl shadow-lime-500/20 flex items-center justify-center gap-3 group"
+                        className="w-full py-6 rounded-[2rem] text-xl font-extrabold bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:brightness-110 active:scale-[0.98] transition-all shadow-2xl shadow-blue-500/30 flex items-center justify-center gap-4 group"
                     >
-                        {isTxPending ? <Loader2 size={24} className="animate-spin" /> : <Zap size={24} fill="currentColor" className="group-hover:scale-125 transition-transform" />}
-                        {isTxPending ? 'Confirming Purchase...' : 'Buy $Fluid Now'}
+                        {isTxPending ? <Loader2 size={28} className="animate-spin" /> : <Zap size={28} fill="currentColor" className="group-hover:scale-125 transition-transform" />}
+                        {isTxPending ? 'Confirming...' : 'Secure My Allocation'}
                     </button>
                 )}
             </div>
             
+            {/* Success/Error Feedback */}
             {isConfirmed && (
-                <div className="p-5 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-4 animate-fade-in-up">
-                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-                      <Check size={20} className="text-emerald-500" />
+                <div className="p-6 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-5 animate-fade-in-up">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center shrink-0">
+                      <Check size={24} className="text-emerald-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-emerald-400">Transaction Successful!</p>
-                      <p className="text-[10px] text-emerald-300 opacity-70">Tokens will be unlocked at the Token Generation Event (TGE).</p>
+                      <p className="text-base font-bold text-emerald-400">Transaction Confirmed!</p>
+                      <p className="text-[11px] text-emerald-300 opacity-60">Your $Fluid tokens have been allocated to your wallet address.</p>
                     </div>
                 </div>
             )}
             {txError && (
-                <div className="p-5 rounded-3xl bg-red-500/10 border border-red-500/20 flex items-center gap-4 animate-fade-in-up">
-                    <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
-                      <AlertCircle size={20} className="text-red-500" />
+                <div className="p-6 rounded-[2rem] bg-red-500/10 border border-red-500/20 flex items-center gap-5 animate-fade-in-up">
+                    <div className="w-12 h-12 rounded-2xl bg-red-500/20 flex items-center justify-center shrink-0">
+                      <AlertCircle size={24} className="text-red-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-red-400">Purchase Error</p>
-                      <p className="text-[10px] text-red-300 opacity-70">Please verify your wallet balance and network connection.</p>
+                      <p className="text-base font-bold text-red-400">Transaction Failed</p>
+                      <p className="text-[11px] text-red-300 opacity-60">Check your balance and try again. Gas may be high.</p>
                     </div>
                 </div>
             )}
 
-            <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex items-start gap-4">
-              <Lightbulb className="text-yellow-400 shrink-0 mt-0.5" size={20} />
-              <p className="text-[11px] leading-relaxed text-slate-400">
-                Fluid is powered by <span className="text-purple-400 font-bold">Polygon</span>. Use Polygon for the fastest confirmation times and lowest transaction fees.
+            {/* Bottom Help Text */}
+            <div className="bg-white/5 rounded-[2rem] p-6 border border-white/5 flex items-start gap-4">
+              <div className="p-2 bg-blue-500/10 rounded-xl">
+                 <Lightbulb className="text-blue-400" size={20} />
+              </div>
+              <p className="text-[12px] leading-relaxed text-slate-400">
+                Participation in the Fluid Presale grants early access to the <span className="text-blue-400 font-bold">L1 Ecosystem</span>. Tokens are securely tracked on the blockchain.
               </p>
             </div>
         </div>
