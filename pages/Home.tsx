@@ -102,14 +102,14 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             Fluid
           </h1>
           
-          {/* Main Tagline - Color Gradient Applied */}
+          {/* Main Tagline */}
           <div className="mb-4">
             <h2 className="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-cyan-400 tracking-tighter italic uppercase leading-none">
               Store. Spend. Host.
             </h2>
           </div>
 
-          {/* Secondary Tagline - Refined Color Gradient Applied */}
+          {/* Secondary Tagline */}
           <div className="mb-8">
             <p className="text-xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-400 uppercase tracking-widest italic">
               Infinitely & Eternally.
@@ -263,4 +263,43 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-16 overflow-hidden bg-[#0206
+      <section className="relative py-16 overflow-hidden bg-[#020617] z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-[#020617] to-blue-500/5"></div>
+        <div className="max-w-4xl mx-auto px-4 text-center relative z-10 scroll-reveal reveal-scale">
+           <Rocket size={48} className="mx-auto text-[#10b981] mb-6 animate-bounce" />
+           <h2 className="text-6xl md:text-8xl font-black text-white mb-6 uppercase italic tracking-tighter leading-[0.8]">Build on the <br/> Foundation</h2>
+           <p className="text-lg text-slate-400 mb-8 leading-relaxed font-bold max-w-2xl mx-auto">
+             Join the Fluid L1 presale and secure your place in a decentralized future. High performance, zero downtime, permanent web.
+           </p>
+           <button 
+             onClick={() => onNavigate('presale')}
+             className="px-14 py-6 bg-white text-[#020617] font-black rounded-2xl text-2xl hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.2)] flex items-center justify-center gap-4 mx-auto uppercase tracking-tighter"
+           >
+             Enter Presale Dashboard <ArrowRight size={28} />
+           </button>
+        </div>
+      </section>
+
+      <div className="py-4 relative z-10">
+         <FluidAssistant />
+      </div>
+
+      <section className="relative py-12 border-t border-white/5 scroll-reveal reveal-up bg-[#020617] z-10">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+           <div className="text-center md:text-left">
+              <h2 className="text-4xl font-black text-white mb-1 uppercase tracking-tighter italic">Institutional Security</h2>
+              <p className="text-slate-500 font-black uppercase tracking-[0.3em] text-[9px]">40% Protocol Revenue Shared with Holders</p>
+           </div>
+           <div className="flex flex-col items-center md:items-end">
+              <div className="text-6xl font-mono font-black text-[#10b981] tracking-tighter drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                 ${totalDistributed.toLocaleString()}
+              </div>
+              <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">Redistributed to community</div>
+           </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;
