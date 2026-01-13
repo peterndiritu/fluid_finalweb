@@ -1,11 +1,6 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize Gemini Client strictly following @google/genai coding guidelines.
-// Always use the named parameter and assume process.env.API_KEY is valid.
-// Fix: Use process.env.API_KEY directly as per guidelines
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 /**
  * Edits an image using Gemini 2.5 Flash Image based on a text prompt.
  * @param base64Image The base64 string of the image (without the data:image/... prefix)
@@ -19,6 +14,7 @@ export const editImageWithGemini = async (
   prompt: string
 ): Promise<string | null> => {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: {
@@ -73,7 +69,7 @@ export interface SearchResult {
  */
 export const generateTextWithSearch = async (prompt: string): Promise<SearchResult> => {
   try {
-    // Fix: Use 'gemini-3-flash-preview' for basic text tasks with search as per model selection rules
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,

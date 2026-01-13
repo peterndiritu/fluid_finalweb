@@ -1,5 +1,7 @@
 {
-  "name": "fluid_finalweb",
-  "description": "Next-gen crypto presale platform featuring Fluid Wallet and Parmaweb hosting.",
-  "requestFramePermissions": []
+  "name": "Fluid Ecosystem",
+  "description": "The unified Layer-1 blockchain for permanent hosting and high-frequency finance.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
 }

@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,14 +16,15 @@ import PrivacyPage from './pages/PrivacyPage';
 import BlockchainPage from './pages/BlockchainPage';
 import BuyPage from './pages/BuyPage';
 import SupportPage from './pages/SupportPage';
+import IntroScreen from './components/IntroScreen';
 import { useAutoConnect } from 'thirdweb/react';
 import { createWallet } from 'thirdweb/wallets';
 import { thirdwebClient } from './client';
 
-function App() {
+const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState('home');
+  const [showIntro, setShowIntro] = useState(true);
 
-  // Define supported wallets globally for stability
   const wallets = useMemo(() => [
     createWallet("io.metamask"),
     createWallet("com.coinbase.wallet"),
@@ -30,7 +32,6 @@ function App() {
     createWallet("io.rabby"),
   ], []);
 
-  // Global auto-connection (silent restoration)
   useAutoConnect({
     client: thirdwebClient,
     wallets: wallets
@@ -57,23 +58,24 @@ function App() {
   };
 
   return (
-    <div 
-      className="min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-emerald-500/30 transition-colors duration-300 relative"
-    >
-      {/* Technological Hosting Grid Background */}
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-emerald-500/30 transition-colors duration-300 relative">
+      {showIntro && <IntroScreen onComplete={() => setShowIntro(false)} />}
+      
       <div className="fixed inset-0 bg-tech-grid pointer-events-none z-0 opacity-100"></div>
       
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className={`relative z-10 flex flex-col min-h-screen transition-opacity duration-1000 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>
         <Header onNavigate={setCurrentPage} currentPage={currentPage} />
 
         <main className="flex-grow">
-          {renderPage()}
+          <div className="animate-fade-in-up">
+            {renderPage()}
+          </div>
         </main>
 
         <Footer onNavigate={setCurrentPage} />
       </div>
     </div>
   );
-}
+};
 
 export default App;
