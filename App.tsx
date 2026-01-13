@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -15,9 +15,26 @@ import PrivacyPage from './pages/PrivacyPage';
 import BlockchainPage from './pages/BlockchainPage';
 import BuyPage from './pages/BuyPage';
 import SupportPage from './pages/SupportPage';
+import { useAutoConnect } from 'thirdweb/react';
+import { createWallet } from 'thirdweb/wallets';
+import { thirdwebClient } from './client';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
+
+  // Define supported wallets globally for stability
+  const wallets = useMemo(() => [
+    createWallet("io.metamask"),
+    createWallet("com.coinbase.wallet"),
+    createWallet("me.rainbow"),
+    createWallet("io.rabby"),
+  ], []);
+
+  // Initiate global auto-connection to restore sessions on mount
+  useAutoConnect({
+    client: thirdwebClient,
+    wallets: wallets
+  });
 
   const renderPage = () => {
     switch(currentPage) {

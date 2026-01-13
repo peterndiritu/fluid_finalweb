@@ -1,13 +1,10 @@
-
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-/* Added missing ChevronRight import */
-import { ChevronDown, Lightbulb, Wallet, Check, AlertCircle, Info, Loader2, Zap, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronDown, Lightbulb, Check, AlertCircle, Info, Loader2, Zap, ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
   ConnectButton, 
   useActiveAccount, 
   useSendTransaction,
   useActiveWalletChain,
-  useAutoConnect,
   useSwitchActiveWalletChain
 } from 'thirdweb/react';
 import { 
@@ -104,19 +101,13 @@ const PresaleCard: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Supported wallets
+  // Supported wallets (same list as App.tsx for consistency)
   const wallets = useMemo(() => [
     createWallet("io.metamask"),
     createWallet("com.coinbase.wallet"),
     createWallet("me.rainbow"),
     createWallet("io.rabby"),
   ], []);
-
-  // Auto-connect logic
-  const isAutoConnecting = useAutoConnect({
-    client: thirdwebClient,
-    wallets: wallets
-  });
 
   const [usdAmount, setUsdAmount] = useState<string>('100');
   const [cryptoPrice, setCryptoPrice] = useState<number>(0);
@@ -202,7 +193,7 @@ const PresaleCard: React.FC = () => {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <span className="text-emerald-400 text-[10px] font-bold uppercase tracking-[0.2em]">
-                  {isAutoConnecting ? 'Verifying Session...' : 'Active Presale Pool'}
+                   Active Presale Pool
                 </span>
             </div>
         </div>
@@ -332,12 +323,7 @@ const PresaleCard: React.FC = () => {
 
             {/* Action Section */}
             <div className="pt-2">
-                {isAutoConnecting ? (
-                  <div className="w-full py-5 rounded-3xl flex items-center justify-center bg-slate-900/50 border border-white/5 text-slate-500 font-bold gap-3">
-                    <Loader2 size={24} className="animate-spin text-lime-500" />
-                    Syncing Wallet State...
-                  </div>
-                ) : !account ? (
+                {!account ? (
                     <div className="flex justify-center connect-btn-wrapper">
                         <ConnectButton 
                           client={thirdwebClient} 
