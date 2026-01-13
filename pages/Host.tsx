@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Server, Database, Cloud, Lock, Terminal, Cpu, Globe, ArrowRight, Search, Check, Loader2, Zap, Rocket } from 'lucide-react';
+import HowItWorks from '../components/HowItWorks';
 
 interface TerminalLine {
   type: 'command' | 'output';
@@ -350,6 +351,11 @@ const HostPage: React.FC = () => {
 
              </div>
           </div>
+      </section>
+
+      {/* Sharding & Endowment Visualization (Technical Deep Dive) */}
+      <section className="border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/20 mb-24">
+         <HowItWorks />
       </section>
 
       {/* Features Grid */}
