@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, ShoppingCart, Download, LayoutGrid, Globe, Wallet, Cpu } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, ShoppingCart, Download, LayoutGrid, Globe, Wallet, Cpu, Info, Compass, LifeBuoy } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { ConnectButton } from "thirdweb/react";
 import { thirdwebClient } from "../client";
@@ -89,42 +89,28 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
   };
 
   const navStructure = [
-    { 
-      label: 'Blockchain', 
-      icon: Cpu,
-      action: () => handleLinkClick('blockchain') 
-    },
-    { 
-      label: 'Wallet', 
-      icon: Wallet,
-      action: () => handleLinkClick('wallet') 
-    },
-    { 
-      label: 'Hosting', 
-      icon: Globe,
-      action: () => handleLinkClick('host') 
-    },
     {
-      label: 'Products',
+      label: 'Ecosystem',
       icon: LayoutGrid,
       children: [
-        { label: 'Fluid Presale', action: () => handleLinkClick('buy') },
+        { label: 'Blockchain', action: () => handleLinkClick('blockchain') },
+        { label: 'Hosting', action: () => handleLinkClick('host') },
         { label: 'Fluid DEX', action: () => handleLinkClick('dex') },
-        { label: 'Fluid Crypto Cards', action: () => handleLinkClick('cards') },
         { label: 'Fluid Token', action: () => handleLinkClick('token') },
+        { label: 'Fluid Wallet', action: () => handleLinkClick('wallet') },
+        { label: 'Fluid Cards', action: () => handleLinkClick('cards') },
       ]
     },
     {
       label: 'Resources',
+      icon: Compass,
       children: [
-        { label: 'About Fluid', action: () => handleLinkClick('about') },
+        { label: 'About Us', action: () => handleLinkClick('about') },
         { label: 'Roadmap', action: () => handleLinkClick('roadmap') },
         { label: 'FAQs', action: () => handleLinkClick('faq') },
-        { label: 'Terms', action: () => handleLinkClick('terms') },
-        { label: 'Privacy', action: () => handleLinkClick('privacy') },
+        { label: 'Support Center', action: () => handleLinkClick('support') },
       ]
-    },
-    { label: 'Support', action: () => handleLinkClick('support') },
+    }
   ];
 
   return (
@@ -132,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
         <div className={`flex items-center justify-between h-16 rounded-2xl px-4 sm:px-6 transition-all duration-300 ${isScrolled || isMenuOpen ? 'backdrop-blur-xl bg-slate-100/10 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 shadow-lg' : 'bg-transparent border-transparent'}`}>
           
-          {/* Left Side Group: Logo + Disperse Menu */}
+          {/* Left Side Group: Logo + Menu Toggle */}
           <div className="flex items-center gap-2 sm:gap-4 relative flex-1 min-w-0" ref={menuRef}>
             
             {/* Logo & Brand */}
@@ -176,49 +162,34 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
-            {/* Dispersed Menu Items Area */}
+            {/* Organized Menu Items Area */}
             <div className={`flex items-center gap-1 sm:gap-2 transition-all duration-500 ease-out overflow-x-auto scrollbar-hide py-1 ${isMenuOpen ? 'max-w-[1000px] opacity-100 ml-2 sm:ml-4' : 'max-w-0 opacity-0 ml-0 pointer-events-none'}`}>
                <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
                {navStructure.map((item, index) => (
                  <div key={index} className="relative group/nav whitespace-nowrap">
-                   {item.children ? (
-                     <div className="relative">
-                        <button 
-                          onClick={() => setActiveSubmenu(activeSubmenu === item.label ? null : item.label)}
-                          className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${activeSubmenu === item.label ? 'text-blue-500 bg-blue-500/10' : 'text-slate-700 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5'}`}
-                        >
-                           {item.icon && <item.icon size={14} className="opacity-70" />}
-                           {item.label}
-                           <ChevronDown size={12} className={`transition-transform duration-200 ${activeSubmenu === item.label ? 'rotate-180' : ''}`} />
-                        </button>
-                        
-                        {/* Submenu Dropdown */}
-                        {activeSubmenu === item.label && (
-                           <div className="absolute top-full left-0 mt-2 w-52 backdrop-blur-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[60] animate-fade-in-up p-2">
-                             {item.children.map((child, cIndex) => (
-                               <button 
-                                 key={cIndex} 
-                                 onClick={() => child.action()} 
-                                 className="w-full text-left px-4 py-2.5 rounded-xl text-[11px] sm:text-xs text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors font-medium"
-                               >
-                                 {child.label}
-                               </button>
-                             ))}
-                           </div>
-                        )}
-                     </div>
-                   ) : (
-                     <button 
-                       onClick={item.action} 
-                       className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${
-                         item.label === 'Blockchain' || item.label === 'Wallet' || item.label === 'Hosting'
-                         ? 'text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10'
-                         : 'text-slate-700 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5'
-                       }`}
-                     >
-                        {item.icon && <item.icon size={14} className="opacity-70" />}
-                        {item.label}
-                     </button>
+                   <button 
+                     onClick={() => setActiveSubmenu(activeSubmenu === item.label ? null : item.label)}
+                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${activeSubmenu === item.label ? 'text-blue-500 bg-blue-500/10' : 'text-slate-700 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5'}`}
+                   >
+                      {item.icon && <item.icon size={14} className="opacity-70" />}
+                      {item.label}
+                      <ChevronDown size={12} className={`transition-transform duration-200 ${activeSubmenu === item.label ? 'rotate-180' : ''}`} />
+                   </button>
+                   
+                   {/* Submenu Dropdown */}
+                   {activeSubmenu === item.label && item.children && (
+                      <div className="absolute top-full left-0 mt-2 w-52 backdrop-blur-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[60] animate-fade-in-up p-2">
+                        {item.children.map((child, cIndex) => (
+                          <button 
+                            key={cIndex} 
+                            onClick={() => child.action()} 
+                            className="w-full text-left px-4 py-2.5 rounded-xl text-[11px] sm:text-xs text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors font-medium flex items-center justify-between group/item"
+                          >
+                            <span>{child.label}</span>
+                            <ChevronRight size={10} className="opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                          </button>
+                        ))}
+                      </div>
                    )}
                  </div>
                ))}
@@ -257,5 +228,11 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
     </nav>
   );
 };
+
+const ChevronRight = ({ size, className }: { size: number, className?: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="m9 18 6-6-6-6"/>
+  </svg>
+);
 
 export default Header;

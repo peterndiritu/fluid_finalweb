@@ -70,7 +70,7 @@ function App() {
           {renderPage()}
         </main>
 
-        <Footer />
+        <Footer onNavigate={setCurrentPage} />
       </div>
     </div>
   );
