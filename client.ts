@@ -2,7 +2,7 @@ import { createThirdwebClient } from "thirdweb";
 import { inAppWallet, createWallet } from "thirdweb/wallets";
 
 export const client = createThirdwebClient({
-  clientId: "f9526bb1508c21f89bdb0762fbee6278",
+  clientId: "9d30a8dffb4aac7ac965e54d6b028699",
 });
 
 export const wallets = [

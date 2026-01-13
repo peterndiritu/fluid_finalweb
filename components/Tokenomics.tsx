@@ -10,9 +10,10 @@ import { defineChain } from "thirdweb/chains";
 import { client } from "../client";
 
 // --- Configuration ---
-const FLUID_TOKEN_ADDRESS = "0x1234567890123456789012345678901234567890"; // Replace with real token address
+// Placeholder address - replace with actual deployed contract
+const FLUID_TOKEN_ADDRESS = "0x0000000000000000000000000000000000000000"; 
 const BURN_ADDRESS = "0x000000000000000000000000000000000000dEaD";
-const CHAIN = defineChain(1); // Ethereum Mainnet or specified chain
+const CHAIN = defineChain(1); // Ethereum Mainnet
 
 const allocationData = [
   { 
@@ -69,23 +70,23 @@ const Tokenomics: React.FC = () => {
     address: FLUID_TOKEN_ADDRESS,
   });
 
-  // Fetch FLUID Price from contract (Mocking typical protocol state function)
-  const { data: contractPrice } = useReadContract({
+  // Fetch FLUID Price from contract (Safely wrapped)
+  const { data: contractPrice, isLoading: isPriceLoading, error: priceError } = useReadContract({
     contract,
     method: "function getFluidPrice() view returns (uint256)",
     params: [],
   });
 
-  // Fetch Total Burned (Balance of dead address)
-  const { data: burnedAmount } = useReadContract({
+  // Fetch Total Burned (Safely wrapped)
+  const { data: burnedAmount, isLoading: isBurnLoading, error: burnError } = useReadContract({
     contract,
     method: "function balanceOf(address account) view returns (uint256)",
     params: [BURN_ADDRESS],
   });
 
-  // Data processing with requested values as defaults
-  const displayPrice = contractPrice ? (Number(contractPrice) / 1e18).toFixed(4) : "0.0525";
-  const displayBurned = burnedAmount ? Number(burnedAmount / BigInt(1e18)).toLocaleString() : "142,601";
+  // Data processing with requested values as defaults if contract read fails
+  const displayPrice = (!priceError && contractPrice) ? (Number(contractPrice) / 1e18).toFixed(4) : "0.0525";
+  const displayBurned = (!burnError && burnedAmount) ? Number(BigInt(burnedAmount) / BigInt(1e18)).toLocaleString() : "142,601";
   
   // Market Cap calculation (Price * 10M supply)
   const mcValue = 10000000 * parseFloat(displayPrice);
@@ -104,7 +105,7 @@ const Tokenomics: React.FC = () => {
                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">FLUID Price</span>
                  <TrendingUp size={14} className="text-emerald-500" />
               </div>
-              <div className="text-2xl font-mono font-extrabold text-slate-900 dark:text-white">
+              <div className={`text-2xl font-mono font-extrabold text-slate-900 dark:text-white ${isPriceLoading ? 'animate-pulse opacity-50' : ''}`}>
                  ${displayPrice}
               </div>
               <div className="text-[10px] text-emerald-500 font-bold mt-1">+2.45% (24h)</div>
@@ -126,7 +127,7 @@ const Tokenomics: React.FC = () => {
                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Total Burned</span>
                  <Flame size={14} className="text-orange-500" />
               </div>
-              <div className="text-2xl font-mono font-extrabold text-slate-900 dark:text-white">
+              <div className={`text-2xl font-mono font-extrabold text-slate-900 dark:text-white ${isBurnLoading ? 'animate-pulse opacity-50' : ''}`}>
                  {displayBurned}
               </div>
               <div className="text-[10px] text-orange-500 font-bold mt-1">Deflationary Mechanism</div>
@@ -146,8 +147,6 @@ const Tokenomics: React.FC = () => {
 
         {/* MAIN DASHBOARD CONTENT */}
         <div className="grid lg:grid-cols-3 gap-8 mb-16">
-          
-          {/* LEFT 2 COLUMNS: ALLOCATION PROFILE */}
           <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center justify-between mb-4">
                  <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -194,13 +193,11 @@ const Tokenomics: React.FC = () => {
               </div>
           </div>
 
-          {/* RIGHT COLUMN: PROTOCOL ECONOMY */}
           <div className="space-y-6">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
                  <Activity size={20} className="text-cyan-500" /> Protocol Economy
               </h3>
 
-              {/* Staking Card */}
               <div className="bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-3xl p-6 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                      <Lock size={64} />
@@ -215,7 +212,6 @@ const Tokenomics: React.FC = () => {
                   </button>
               </div>
 
-              {/* Scarcity Gauge */}
               <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6">
                   <h4 className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mb-4 flex items-center gap-2">
                      <Flame size={12} className="text-orange-500" /> Scarcity Tracker
@@ -245,7 +241,6 @@ const Tokenomics: React.FC = () => {
                   </div>
               </div>
 
-              {/* Security Badge */}
               <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-3xl flex items-center gap-4">
                  <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 shrink-0">
                     <ShieldCheck size={24} />
@@ -288,19 +283,6 @@ const Tokenomics: React.FC = () => {
               </div>
            </div>
         </div>
-
-        {/* GOVERNANCE CTA */}
-        <div className="mt-20 p-12 bg-slate-100 dark:bg-slate-900 rounded-[3rem] border border-slate-200 dark:border-slate-800 text-center relative overflow-hidden group">
-           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-           <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Governance & Voting</h3>
-           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-8 text-lg">
-              FLUID token holders decide the future of the protocol. Vote on new feature integrations, reward multipliers, and treasury allocations.
-           </p>
-           <button className="px-10 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:scale-105 transition-transform flex items-center justify-center gap-2 mx-auto">
-              Launch Governance Portal <ArrowUpRight size={20} />
-           </button>
-        </div>
-
       </div>
     </section>
   );
