@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Cpu, Server, ShieldCheck, Database, ArrowLeftRight, CreditCard, Zap, Layers } from 'lucide-react';
+import { ArrowRight, Cpu, Server, ShieldCheck, Database, ArrowLeftRight, CreditCard, Zap, Globe, Activity, MapPin } from 'lucide-react';
 import FluidAssistant from '../components/FluidAssistant';
 import FluidLogo from '../components/FluidLogo';
 
@@ -111,21 +111,90 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('blockchain')}
               className="px-12 py-5 bg-slate-900 text-white border border-slate-800 font-bold rounded-2xl text-lg hover:bg-slate-800 transition-colors"
              >
-               Learn More
+               Explore Tech
              </button>
           </div>
         </div>
       </section>
 
+      {/* Infrastructure Visualization */}
+      <section className="py-24 relative overflow-hidden bg-slate-950 border-y border-white/5">
+        <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="scroll-card">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6">
+                <Globe size={14} /> Globalised Hosting Infrastructure
+              </div>
+              <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-8 leading-tight">
+                Global Nodes. <br/>
+                <span className="text-emerald-400 underline decoration-emerald-500/30">Infinite Uptime.</span>
+              </h2>
+              <p className="text-slate-400 text-lg mb-10 leading-relaxed">
+                Fluid's Parmaweb protocol distributes your dApps across a decentralized mesh of institutional-grade nodes. No single point of failure, no centralized hosting risks.
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
+                  <div className="text-3xl font-mono font-bold text-white mb-1">100%</div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Storage Redundancy</div>
+                </div>
+                <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
+                  <div className="text-3xl font-mono font-bold text-white mb-1">~0ms</div>
+                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">CDN Latency</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Map/Mesh Visualization */}
+            <div className="relative aspect-square md:aspect-video bg-slate-900/40 rounded-[3rem] border border-white/10 overflow-hidden flex items-center justify-center group scroll-card">
+               <div className="absolute inset-0 bg-tech-grid opacity-30"></div>
+               <div className="relative w-full h-full p-12">
+                  <div className="absolute top-[20%] left-[30%] animate-pulse">
+                     <MapPin className="text-emerald-500" size={24} />
+                     <div className="absolute top-0 left-0 w-6 h-6 bg-emerald-500/40 rounded-full animate-ping"></div>
+                  </div>
+                  <div className="absolute top-[50%] left-[70%] animate-pulse delay-700">
+                     <MapPin className="text-blue-500" size={24} />
+                     <div className="absolute top-0 left-0 w-6 h-6 bg-blue-500/40 rounded-full animate-ping"></div>
+                  </div>
+                  <div className="absolute bottom-[25%] left-[15%] animate-pulse delay-300">
+                     <MapPin className="text-cyan-500" size={24} />
+                     <div className="absolute top-0 left-0 w-6 h-6 bg-cyan-500/40 rounded-full animate-ping"></div>
+                  </div>
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="32%" y1="24%" x2="72%" y2="54%" stroke="white" strokeWidth="1" strokeDasharray="4 4" className="opacity-20" />
+                    <line x1="17%" y1="78%" x2="32%" y2="24%" stroke="white" strokeWidth="1" strokeDasharray="4 4" className="opacity-20" />
+                  </svg>
+                  <div className="absolute bottom-8 right-8 p-6 bg-slate-950/80 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl">
+                     <div className="flex items-center gap-3 mb-4">
+                        <Activity className="text-emerald-400" size={16} />
+                        <span className="text-[10px] font-bold text-white uppercase tracking-widest">Node Network Health</span>
+                     </div>
+                     <div className="space-y-3">
+                        <div className="flex justify-between gap-8 text-[10px] font-bold text-slate-500 uppercase">
+                           <span>Active Nodes</span>
+                           <span className="text-emerald-400">1,248</span>
+                        </div>
+                        <div className="w-48 h-1 bg-slate-800 rounded-full overflow-hidden">
+                           <div className="w-[92%] h-full bg-emerald-500"></div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Grid Section */}
-      <section className="py-24 bg-slate-950/50 border-y border-white/5 relative">
+      <section className="py-24 bg-slate-950/50 relative">
         <div className="max-w-7xl mx-auto px-4">
            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {coreComponents.map((item, idx) => (
                 <div 
                   key={idx} 
                   onClick={() => onNavigate(item.link)}
-                  className="group p-10 bg-slate-900/40 border border-slate-800 rounded-[2.5rem] hover:border-blue-500/30 transition-all cursor-pointer relative overflow-hidden flex flex-col shadow-xl"
+                  className="group p-10 bg-slate-900/40 border border-slate-800 rounded-[2.5rem] hover:border-blue-500/30 transition-all cursor-pointer relative overflow-hidden flex flex-col shadow-xl scroll-card"
                 >
                    <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-8 ${item.color} group-hover:scale-110 transition-transform`}>
                       <item.icon size={28} />

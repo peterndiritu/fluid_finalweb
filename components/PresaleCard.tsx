@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { ChevronDown, Check, AlertCircle, Info, Loader2, Zap, ChevronLeft, ChevronRight, Globe } from 'lucide-react';
+import { ChevronDown, Check, AlertCircle, Info, Loader2, Zap, ChevronLeft, ChevronRight, Globe, Layers } from 'lucide-react';
 import { 
   useActiveAccount, 
   useSendTransaction,
@@ -61,6 +61,13 @@ const NETWORKS: NetworkOption[] = [
       { id: 'usdt_bsc', symbol: 'USDT', name: 'Tether', chainId: 56, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0x55d398326f99059fF775485246999027B3197955", decimals: 18 },
     ]
   }
+];
+
+const STAGES = [
+  { id: 1, name: "Stage 1", price: "$1.00", active: true },
+  { id: 2, name: "Stage 2", price: "$1.15", active: false },
+  { id: 3, name: "Stage 3", price: "$1.30", active: false },
+  { id: 4, name: "Launch", price: "$1.50", active: false },
 ];
 
 const PresaleCard: React.FC = () => {
@@ -135,8 +142,36 @@ const PresaleCard: React.FC = () => {
             <h2 className="text-2xl font-bold text-white">Acquire $Fluid</h2>
             <div className="flex items-center gap-2 mt-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Infrastructure Round Stage 1</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Global Infrastructure Presale</span>
             </div>
+        </div>
+
+        {/* Stage Progress Indicator */}
+        <div className="px-8 pt-8">
+           <div className="flex justify-between relative">
+              {/* Connector Lines */}
+              <div className="absolute top-4 left-0 right-0 h-0.5 bg-slate-800 -z-0">
+                 <div className="h-full bg-blue-500 w-[25%]"></div>
+              </div>
+              
+              {STAGES.map((s) => (
+                 <div key={s.id} className="relative z-10 flex flex-col items-center">
+                    <div className={`w-8 h-8 rounded-full border-4 flex items-center justify-center transition-all duration-500 ${
+                       s.active 
+                       ? 'bg-blue-500 border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.5)] scale-110' 
+                       : s.id < 1 ? 'bg-blue-500 border-blue-500/30' : 'bg-slate-900 border-slate-800'
+                    }`}>
+                       {s.id < 1 ? <Check size={14} className="text-white" /> : (
+                          <span className={`text-[10px] font-bold ${s.active ? 'text-white' : 'text-slate-500'}`}>{s.id}</span>
+                       )}
+                    </div>
+                    <div className="mt-2 text-center">
+                       <div className={`text-[9px] font-bold uppercase tracking-tighter ${s.active ? 'text-blue-400' : 'text-slate-600'}`}>{s.name}</div>
+                       <div className={`text-[10px] font-mono font-bold ${s.active ? 'text-white' : 'text-slate-500'}`}>{s.price}</div>
+                    </div>
+                 </div>
+              ))}
+           </div>
         </div>
 
         <div className="p-8 space-y-8">
@@ -211,8 +246,8 @@ const PresaleCard: React.FC = () => {
             )}
 
             <div className="flex justify-between items-center text-[10px] font-bold text-slate-500 px-2">
-                <span className="flex items-center gap-1"><Info size={12}/> Price: $1.00 USD</span>
-                <span className="flex items-center gap-1 uppercase tracking-tighter">Listing Goal: $1.50</span>
+                <span className="flex items-center gap-1"><Info size={12}/> Min Buy: $50 USD</span>
+                <span className="flex items-center gap-1 uppercase tracking-tighter">Current Stage: 1/4</span>
             </div>
         </div>
       </div>
