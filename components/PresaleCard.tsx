@@ -21,6 +21,19 @@ import { thirdwebClient } from "../client";
 const PRESALE_CONTRACT_ADDRESS = "0xec9123Aa60651ceee7c0E084c884Cd33478c92a5";
 const FALLBACK_FLUID_PRICE = 1.0; // 1 USDT per FLUID
 
+const FluidTokenIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="tokenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#3b82f6" />
+        <stop offset="100%" stopColor="#10b981" />
+      </linearGradient>
+    </defs>
+    <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#tokenGrad)" />
+    <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#tokenGrad)" />
+  </svg>
+);
+
 interface PaymentToken {
   id: string;
   symbol: string;
@@ -42,6 +55,17 @@ interface NetworkOption {
 
 const NETWORKS: NetworkOption[] = [
   {
+    id: 137,
+    name: "Polygon",
+    symbol: "POL",
+    icon: "https://cryptologos.cc/logos/polygon-matic-logo.png?v=026",
+    tokens: [
+      { id: 'matic', symbol: 'POL', name: 'Polygon', chainId: 137, icon: 'https://cryptologos.cc/logos/polygon-matic-logo.png?v=026', isNative: true, decimals: 18 },
+      { id: 'usdc_poly', symbol: 'USDC', name: 'USD Coin', chainId: 137, icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026', isNative: false, address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", decimals: 6 },
+      { id: 'usdt_poly', symbol: 'USDT', name: 'Tether', chainId: 137, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", decimals: 6 },
+    ]
+  },
+  {
     id: 1,
     name: "Ethereum",
     symbol: "ETH",
@@ -62,17 +86,6 @@ const NETWORKS: NetworkOption[] = [
       { id: 'usdt_bsc', symbol: 'USDT', name: 'Tether', chainId: 56, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0x55d398326f99059fF775485246999027B3197955", decimals: 18 },
       { id: 'busd_bsc', symbol: 'BUSD', name: 'BUSD', chainId: 56, icon: 'https://cryptologos.cc/logos/binance-usd-busd-logo.png?v=026', isNative: false, address: "0xe9e7CEA3dedcA5984780Bafc599bD69ADd087D56", decimals: 18 },
     ]
-  },
-  {
-    id: 137,
-    name: "Polygon",
-    symbol: "MATIC",
-    icon: "https://cryptologos.cc/logos/polygon-matic-logo.png?v=026",
-    tokens: [
-      { id: 'matic', symbol: 'MATIC', name: 'Polygon', chainId: 137, icon: 'https://cryptologos.cc/logos/polygon-matic-logo.png?v=026', isNative: true, decimals: 18 },
-      { id: 'usdc_poly', symbol: 'USDC', name: 'USD Coin', chainId: 137, icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026', isNative: false, address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", decimals: 6 },
-      { id: 'usdt_poly', symbol: 'USDT', name: 'Tether', chainId: 137, icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', isNative: false, address: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", decimals: 6 },
-    ]
   }
 ];
 
@@ -89,7 +102,6 @@ const PresaleCard: React.FC = () => {
   
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -101,7 +113,6 @@ const PresaleCard: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Supported wallets (same list as App.tsx for consistency)
   const wallets = useMemo(() => [
     createWallet("io.metamask"),
     createWallet("com.coinbase.wallet"),
@@ -124,13 +135,15 @@ const PresaleCard: React.FC = () => {
           setCryptoPrice(1);
           return;
         }
-        const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}USDT`);
+        // Binance uses MATIC ticker for Polygon's native token mostly
+        const ticker = symbol === 'POL' ? 'MATIC' : symbol;
+        const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${ticker}USDT`);
         const data = await res.json();
         if (data.price) setCryptoPrice(parseFloat(data.price));
       } catch (e) {
         if (selectedToken.symbol === 'ETH') setCryptoPrice(3200);
         if (selectedToken.symbol === 'BNB') setCryptoPrice(600);
-        if (selectedToken.symbol === 'MATIC') setCryptoPrice(0.70);
+        if (selectedToken.symbol === 'POL') setCryptoPrice(0.70);
       }
     };
     fetchPrice();
@@ -140,8 +153,6 @@ const PresaleCard: React.FC = () => {
 
   const handleBuy = async () => {
     if (!account || !usdAmount) return;
-
-    // Check if on correct chain
     if (activeChain?.id !== selectedToken.chainId) {
         try {
             await switchChain(defineChain(selectedToken.chainId));
@@ -150,14 +161,12 @@ const PresaleCard: React.FC = () => {
             return;
         }
     }
-    
     const chain = defineChain(selectedToken.chainId);
     const contract = getContract({
       client: thirdwebClient,
       chain: chain,
       address: PRESALE_CONTRACT_ADDRESS,
     });
-
     try {
       let tx;
       if (selectedToken.isNative) {
@@ -184,22 +193,20 @@ const PresaleCard: React.FC = () => {
     <div className="w-full max-w-[480px] mx-auto z-10">
       <div className="bg-slate-950/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-300">
         
-        {/* Header */}
         <div className="p-8 border-b border-white/5 flex flex-col items-center bg-gradient-to-b from-white/5 to-transparent">
-            <h2 className="text-3xl font-extrabold text-white tracking-tight">Purchase $FLUID</h2>
+            <h2 className="text-3xl font-extrabold text-white tracking-tight">Purchase $Fluid</h2>
             <div className="flex items-center gap-2 mt-3">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <span className="text-emerald-400 text-[10px] font-bold uppercase tracking-[0.2em]">
-                   Active Presale Pool
+                   Polygon Mainnet Pool Active
                 </span>
             </div>
         </div>
 
         <div className="p-8 space-y-8">
-            {/* Input Section */}
             <div className="space-y-5">
                 <div className="space-y-2">
                     <div className="flex justify-between items-end px-1">
@@ -215,7 +222,6 @@ const PresaleCard: React.FC = () => {
                             placeholder="0.00"
                         />
                         
-                        {/* Token Selector Button */}
                         <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
                           <button 
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -231,7 +237,6 @@ const PresaleCard: React.FC = () => {
                             <ChevronDown size={14} className={`text-slate-500 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
                           </button>
 
-                          {/* Multi-step Dropdown */}
                           {isDropdownOpen && (
                             <div className="absolute right-0 top-full mt-3 w-64 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 animate-fade-in-up">
                               {selectorView === 'network' ? (
@@ -246,7 +251,7 @@ const PresaleCard: React.FC = () => {
                                           setSelectorView('token');
                                         }}
                                         className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all group ${
-                                          selectedToken.chainId === net.id 
+                                          selectedNetwork.id === net.id 
                                           ? 'bg-white/10 border border-white/10' 
                                           : 'hover:bg-white/5 border border-transparent'
                                         }`}
@@ -302,26 +307,24 @@ const PresaleCard: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Receiver Section */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-500 ml-1 uppercase tracking-wider">You Receive ($FLUID)</label>
+                    <label className="text-[10px] font-bold text-slate-500 ml-1 uppercase tracking-wider">You Receive ($Fluid)</label>
                     <div className="relative">
                         <div className="w-full bg-slate-900/40 border border-white/10 rounded-3xl py-6 pl-6 pr-32 text-3xl font-bold text-emerald-400 cursor-default shadow-inner">
                             {fluidAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                         </div>
                         <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-3 bg-emerald-500/10 px-5 py-3 rounded-2xl border border-emerald-500/20">
-                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-[10px] text-white font-bold shadow-lg shadow-blue-500/20">F</div>
-                            <span className="text-xs font-bold text-emerald-400 tracking-wider">FLUID</span>
+                            <FluidTokenIcon className="w-7 h-7" />
+                            <span className="text-xs font-bold text-emerald-400 tracking-wider">Fluid</span>
                         </div>
                     </div>
                     <div className="flex justify-between px-1 text-[10px] font-medium text-slate-500">
                         <span>Launch Listing: $1.50</span>
-                        <span className="flex items-center gap-1"><Info size={10} /> 1 FLUID = ${fluidPrice.toFixed(2)} USD</span>
+                        <span className="flex items-center gap-1"><Info size={10} /> 1 Fluid = ${fluidPrice.toFixed(2)} USD</span>
                     </div>
                 </div>
             </div>
 
-            {/* Action Section */}
             <div className="pt-2">
                 {!account ? (
                     <div className="flex justify-center connect-btn-wrapper">
@@ -350,12 +353,11 @@ const PresaleCard: React.FC = () => {
                         className="w-full py-5 rounded-3xl text-lg font-bold bg-gradient-to-r from-lime-400 to-green-500 text-slate-900 hover:brightness-110 active:scale-[0.98] transition-all shadow-xl shadow-lime-500/20 flex items-center justify-center gap-3 group"
                     >
                         {isTxPending ? <Loader2 size={24} className="animate-spin" /> : <Zap size={24} fill="currentColor" className="group-hover:scale-125 transition-transform" />}
-                        {isTxPending ? 'Confirming Purchase...' : 'Buy $FLUID Now'}
+                        {isTxPending ? 'Confirming Purchase...' : 'Buy $Fluid Now'}
                     </button>
                 )}
             </div>
             
-            {/* Notifications */}
             {isConfirmed && (
                 <div className="p-5 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-4 animate-fade-in-up">
                     <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
@@ -379,14 +381,12 @@ const PresaleCard: React.FC = () => {
                 </div>
             )}
 
-            {/* Hint */}
             <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex items-start gap-4">
               <Lightbulb className="text-yellow-400 shrink-0 mt-0.5" size={20} />
               <p className="text-[11px] leading-relaxed text-slate-400">
-                Purchase over <span className="text-white font-bold">$1,000</span> worth of $FLUID to unlock a <span className="text-lime-400 font-bold">Fluid Metal Card</span> and priority hosting allocation.
+                Fluid is powered by <span className="text-purple-400 font-bold">Polygon</span>. Use Polygon for the fastest confirmation times and lowest transaction fees.
               </p>
             </div>
-
         </div>
       </div>
     </div>

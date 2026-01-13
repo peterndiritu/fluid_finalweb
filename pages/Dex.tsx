@@ -2,7 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { ArrowDownUp, Settings, ChevronDown, Shield, RefreshCw, Zap, TrendingUp, Play, Apple, Box, Wallet, Globe, CheckCircle, ExternalLink, Loader2, Lock, ArrowRight } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-// Mock Data for Chart
+const FluidTokenIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="dexTokenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#3b82f6" />
+        <stop offset="100%" stopColor="#10b981" />
+      </linearGradient>
+    </defs>
+    <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#dexTokenGrad)" />
+    <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#dexTokenGrad)" />
+  </svg>
+);
+
 const data = [
   { name: '10:00', price: 1840 },
   { name: '11:00', price: 1855 },
@@ -14,16 +26,12 @@ const data = [
 ];
 
 const DexPage: React.FC = () => {
-  // Swap State
   const [payAmount, setPayAmount] = useState<string>('1.5');
   const [receiveAmount, setReceiveAmount] = useState<string>('2760');
   const [isSwapping, setIsSwapping] = useState(false);
   const [swapStatus, setSwapStatus] = useState<'idle' | 'approving' | 'swapping' | 'success'>('idle');
-  
-  // DApp Connectivity State
   const [activeDapp, setActiveDapp] = useState<string | null>(null);
 
-  // Auto-calculate receive amount (Mock rate: 1 ETH = 1840 USDC)
   useEffect(() => {
     if (!payAmount) {
         setReceiveAmount('');
@@ -38,8 +46,6 @@ const DexPage: React.FC = () => {
   const handleSwap = () => {
     setIsSwapping(true);
     setSwapStatus('approving');
-    
-    // Simulate steps
     setTimeout(() => setSwapStatus('swapping'), 1500);
     setTimeout(() => setSwapStatus('success'), 3500);
     setTimeout(() => {
@@ -58,8 +64,6 @@ const DexPage: React.FC = () => {
 
   return (
     <div className="min-h-screen pt-28 pb-16">
-      
-      {/* Header */}
       <div className="text-center mb-16 px-4">
         <span className="text-cyan-400 font-bold uppercase tracking-widest text-sm">Decentralized Exchange</span>
         <h1 className="text-5xl font-extrabold text-white mt-2 mb-4">Fluid DEX</h1>
@@ -70,14 +74,9 @@ const DexPage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start mb-24">
-            
-            {/* Left Column: Swap Interface */}
             <div className="relative z-10">
                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-                    {/* Background Glow */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl -z-10"></div>
-
-                    {/* Tabs */}
                     <div className="flex justify-between items-center mb-6">
                        <div className="flex gap-1 p-1 bg-slate-950 rounded-xl">
                           <button className="px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-bold shadow-sm">Swap</button>
@@ -86,8 +85,6 @@ const DexPage: React.FC = () => {
                        </div>
                        <button className="text-slate-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"><Settings size={20} /></button>
                     </div>
-
-                    {/* Pay Input */}
                     <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-2 relative group focus-within:border-slate-600 transition-colors">
                        <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
                           <span>You pay</span>
@@ -119,19 +116,15 @@ const DexPage: React.FC = () => {
                             </div>
                        </div>
                     </div>
-
-                    {/* Swap Arrow */}
                     <div className="flex justify-center -my-4 relative z-10">
                        <div className="bg-slate-900 border-4 border-slate-900 p-2 rounded-xl text-slate-400 cursor-pointer hover:text-white hover:bg-slate-800 transition-all shadow-lg">
                           <ArrowDownUp size={20} />
                        </div>
                     </div>
-
-                    {/* Receive Input */}
                     <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-4 pt-6">
                        <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
                           <span>You receive</span>
-                          <span>Balance: 0.00 USDC</span>
+                          <span>Balance: 0.00 Fluid</span>
                        </div>
                        <div className="flex justify-between items-center">
                           <input 
@@ -143,9 +136,9 @@ const DexPage: React.FC = () => {
                           />
                           <button className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-full transition-colors border border-slate-700">
                              <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center">
-                                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026" className="w-4 h-4" alt="USDC" />
+                                <FluidTokenIcon className="w-4 h-4" />
                              </div>
-                             <span className="font-bold text-white text-lg">USDC</span>
+                             <span className="font-bold text-white text-lg">Fluid</span>
                              <ChevronDown size={16} className="text-slate-400" />
                           </button>
                        </div>
@@ -153,20 +146,16 @@ const DexPage: React.FC = () => {
                             <span className="text-xs text-slate-500">~$2,758.10 (-0.08%)</span>
                        </div>
                     </div>
-
-                    {/* Route Info */}
                     <div className="bg-slate-950/50 rounded-xl p-3 border border-slate-800/50 mb-6 space-y-2">
                         <div className="flex justify-between text-xs">
                             <span className="text-slate-500 flex items-center gap-1">Rate <RefreshCw size={10}/></span>
-                            <span className="text-slate-300">1 ETH = 1,840 USDC</span>
+                            <span className="text-slate-300">1 ETH = 1,840 Fluid</span>
                         </div>
                         <div className="flex justify-between text-xs">
                             <span className="text-slate-500 flex items-center gap-1">Network Cost <Zap size={10}/></span>
                             <span className="text-slate-300">~$2.45</span>
                         </div>
                     </div>
-
-                    {/* Action Button */}
                     <button 
                         onClick={handleSwap}
                         disabled={isSwapping || !payAmount}
@@ -181,21 +170,17 @@ const DexPage: React.FC = () => {
                        {swapStatus === 'swapping' && <><Loader2 className="animate-spin"/> Swapping...</>}
                        {swapStatus === 'success' && <><CheckCircle className="text-emerald-400"/> Success!</>}
                     </button>
-
                  </div>
             </div>
 
-            {/* Right Column: Chart & DApps */}
             <div className="space-y-8">
-                
-                {/* Chart Mockup */}
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl h-[300px] flex flex-col">
                     <div className="flex justify-between items-start mb-4">
                         <div>
                             <div className="flex items-center gap-2">
                                 <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026" className="w-6 h-6" alt="ETH"/>
                                 <h3 className="text-xl font-bold text-white">Ethereum</h3>
-                                <span className="text-slate-500">/ USDC</span>
+                                <span className="text-slate-500">/ Fluid</span>
                             </div>
                             <div className="text-2xl font-bold text-white mt-1">$1,840.52</div>
                             <div className="text-emerald-400 text-sm font-bold flex items-center gap-1"><TrendingUp size={14}/> +2.4%</div>
@@ -225,7 +210,6 @@ const DexPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* DApp Connectivity */}
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
@@ -239,7 +223,6 @@ const DexPage: React.FC = () => {
                         </div>
                         <button className="text-xs text-cyan-400 font-bold hover:underline">View All</button>
                     </div>
-
                     <div className="grid grid-cols-2 gap-4">
                         {dapps.map((dapp, i) => (
                             <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-600 transition-colors group">
@@ -268,15 +251,11 @@ const DexPage: React.FC = () => {
                         </div>
                     )}
                 </div>
-
             </div>
         </div>
-
-        {/* Features Section */}
         <div className="mb-24">
             <h2 className="text-3xl font-extrabold text-white text-center mb-12">Pro Trading Features</h2>
             <div className="grid md:grid-cols-3 gap-6">
-                
                 <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl hover:border-cyan-500/30 transition-colors group relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors"></div>
                     <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 text-cyan-500 group-hover:scale-110 transition-transform">
@@ -287,7 +266,6 @@ const DexPage: React.FC = () => {
                         Zero-knowledge proof integration allows for completely anonymous trades. Your financial history remains private.
                     </p>
                 </div>
-
                 <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl hover:border-purple-500/30 transition-colors group relative overflow-hidden">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/10 transition-colors"></div>
                     <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 text-purple-500 group-hover:scale-110 transition-transform">
@@ -298,7 +276,6 @@ const DexPage: React.FC = () => {
                         Our smart router splits orders across 12+ liquidity sources (Uniswap, Sushi, Curve) to guarantee the best price impact.
                     </p>
                 </div>
-
                 <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl hover:border-emerald-500/30 transition-colors group relative overflow-hidden">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors"></div>
                     <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6 text-emerald-500 group-hover:scale-110 transition-transform">
@@ -306,14 +283,11 @@ const DexPage: React.FC = () => {
                     </div>
                     <h3 className="text-xl font-bold text-white mb-3">Gasless Trading</h3>
                     <p className="text-slate-400">
-                        Pay transaction fees in the token you are swapping, or stake FLUID to enjoy gas-free trades on the Fluid network.
+                        Pay transaction fees in the token you are swapping, or stake Fluid to enjoy gas-free trades on the Fluid network.
                     </p>
                 </div>
-
             </div>
         </div>
-
-        {/* CTA */}
         <div className="text-center bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-12 relative overflow-hidden">
              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
              <div className="relative z-10">
@@ -323,7 +297,6 @@ const DexPage: React.FC = () => {
                  </button>
              </div>
         </div>
-
       </div>
     </div>
   );

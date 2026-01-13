@@ -2,9 +2,10 @@ import React from 'react';
 import { Download, Mail, Facebook } from 'lucide-react';
 
 const Footer: React.FC = () => {
-  const handleDownloadLogo = () => {
+  const handleDownloadLogo = (e: React.MouseEvent) => {
+    e.stopPropagation();
     const svgContent = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 120 100">
+      <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100">
         <defs>
           <linearGradient id="footerDlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#3b82f6" />
@@ -13,14 +14,13 @@ const Footer: React.FC = () => {
         </defs>
         <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#footerDlGrad)" />
         <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#footerDlGrad)" />
-        <text x="5" y="90" font-family="Arial" font-weight="bold" font-size="28" fill="url(#footerDlGrad)">Fluid</text>
       </svg>
     `;
     const blob = new Blob([svgContent], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Fluid-logo-transparent.svg';
+    link.download = 'Fluid-logo.svg';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -69,8 +69,12 @@ const Footer: React.FC = () => {
   return (
     <footer className="py-12 relative z-10 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 text-center">
-          <button onClick={handleDownloadLogo} className="group relative flex items-center justify-center mb-8 mx-auto" title="Download Brand Asset">
-              <div className="w-12 h-12 flex items-center justify-center mr-2 transition-all group-hover:scale-110 z-10">
+          <div className="flex items-center justify-center mb-8 mx-auto gap-4">
+              <button 
+                onClick={handleDownloadLogo} 
+                className="group relative w-12 h-12 flex items-center justify-center transition-all hover:scale-110" 
+                title="Download Brand Logo"
+              >
                  <svg width="48" height="48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -81,12 +85,12 @@ const Footer: React.FC = () => {
                     <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#footerLogoGradient)" />
                     <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#footerLogoGradient)" />
                  </svg>
-              </div>
-              <span className="font-bold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400 group-hover:opacity-80 transition-opacity">Fluid</span>
-              <div className="absolute -right-32 top-1/2 -translate-y-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none flex items-center gap-1">
-                  <Download size={10} /> Click to Download Logo
-              </div>
-          </button>
+                 <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none flex items-center gap-1 shadow-lg">
+                    <Download size={8} /> Download Logo
+                </div>
+              </button>
+              <span className="font-bold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">Fluid</span>
+          </div>
           <div className="flex justify-center gap-6 mb-8">
             {socialLinks.map((link) => (
               <a key={link.name} href={link.url} target="_blank" rel="noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white dark:hover:bg-cyan-500 dark:hover:text-black transition-all duration-300 backdrop-blur-sm" title={link.name}>

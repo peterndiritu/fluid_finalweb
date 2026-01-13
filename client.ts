@@ -1,4 +1,4 @@
-import { createThirdwebClient, getContract } from "thirdweb";
+import { createThirdwebClient } from "thirdweb";
 import { defineChain } from "thirdweb/chains";
 
 // Thirdweb Client ID
@@ -8,9 +8,9 @@ export const thirdwebClient = createThirdwebClient({
   clientId: clientId,
 });
 
-// Common chains
+// Common chains - Polygon is the primary chain for Fluid
+export const polygon = defineChain(137);
 export const ethereum = defineChain(1);
 export const bsc = defineChain(56);
-export const polygon = defineChain(137);
 
-export const networks = [ethereum, bsc, polygon];
+export const networks = [polygon, ethereum, bsc];
