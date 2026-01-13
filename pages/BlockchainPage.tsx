@@ -1,6 +1,27 @@
 import React from 'react';
 import { Zap, Shield, Layers, Code2, Globe, Cpu, CheckCircle, Wifi, Terminal, Database, ArrowRight, Activity, Clock, BarChart3, Binary, Network } from 'lucide-react';
 
+// Helper for the missing icon in the list - Defined at top to ensure availability in the component scope
+const RefreshCwIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+    <path d="M21 3v5h-5" />
+    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+    <path d="M3 21v-5h5" />
+  </svg>
+);
+
 const BlockchainPage: React.FC = () => {
   const innovations = [
     {
@@ -50,7 +71,7 @@ const BlockchainPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-28 pb-16">
       {/* Hero Section */}
-      <section className="text-center px-4 mb-24 relative overflow-hidden">
+      <section className="text-center px-4 mb-24 relative overflow-hidden scroll-reveal reveal-up">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20">
           <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-500 rounded-full blur-[150px]"></div>
           <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-emerald-500 rounded-full blur-[150px]"></div>
@@ -80,7 +101,7 @@ const BlockchainPage: React.FC = () => {
       </section>
 
       {/* Network Stats */}
-      <section className="max-w-7xl mx-auto px-4 mb-32">
+      <section className="max-w-7xl mx-auto px-4 mb-32 scroll-reveal reveal-scale">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl group hover:border-blue-500/30 transition-all">
             <div className="text-4xl font-mono font-extrabold text-white mb-1 group-hover:text-blue-400 transition-colors">2M+</div>
@@ -103,25 +124,28 @@ const BlockchainPage: React.FC = () => {
 
       {/* Technical Innovations */}
       <section className="max-w-7xl mx-auto px-4 mb-32">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 scroll-reveal reveal-up">
           <h2 className="text-4xl font-extrabold text-white mb-4">Technical innovations</h2>
           <p className="text-slate-400 max-w-2xl mx-auto">Pushing the boundaries of decentralized computing architecture.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {innovations.map((item, idx) => (
-            <div key={idx} className="p-10 bg-slate-900/40 border border-slate-800 rounded-[2.5rem] hover:border-blue-500/20 transition-all group">
-              <div className={`w-14 h-14 bg-slate-950 rounded-2xl flex items-center justify-center mb-6 ${item.color} group-hover:scale-110 transition-transform shadow-inner`}>
-                <item.icon size={28} />
+          {innovations.map((item, idx) => {
+            const InnovationIcon = item.icon;
+            return (
+              <div key={idx} className={`p-10 bg-slate-900/40 border border-slate-800 rounded-[2.5rem] hover:border-blue-500/20 transition-all group scroll-reveal reveal-up delay-${(idx % 3) * 100}`}>
+                <div className={`w-14 h-14 bg-slate-950 rounded-2xl flex items-center justify-center mb-6 ${item.color} group-hover:scale-110 transition-transform shadow-inner`}>
+                  <InnovationIcon size={28} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
+                <p className="text-slate-500 leading-relaxed font-medium">{item.desc}</p>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
-              <p className="text-slate-500 leading-relaxed font-medium">{item.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
       {/* Performance Comparison */}
-      <section className="max-w-7xl mx-auto px-4 mb-32">
+      <section className="max-w-7xl mx-auto px-4 mb-32 scroll-reveal reveal-scale">
         <div className="bg-slate-900/40 border border-slate-800 rounded-[3rem] p-8 md:p-16 backdrop-blur-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 p-10 opacity-5">
             <BarChart3 size={200} />
@@ -158,7 +182,7 @@ const BlockchainPage: React.FC = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="text-center px-4 relative">
+      <section className="text-center px-4 relative scroll-reveal reveal-up">
         <div className="max-w-5xl mx-auto py-24 px-8 bg-gradient-to-br from-blue-600/10 to-emerald-500/10 border border-white/5 rounded-[3rem] relative overflow-hidden">
           <div className="absolute top-0 right-0 p-12 opacity-10">
             <Terminal size={120} />
@@ -175,26 +199,5 @@ const BlockchainPage: React.FC = () => {
     </div>
   );
 };
-
-// Helper for the missing icon in the list
-const RefreshCwIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-    <path d="M21 3v5h-5" />
-    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-    <path d="M3 21v-5h5" />
-  </svg>
-);
 
 export default BlockchainPage;

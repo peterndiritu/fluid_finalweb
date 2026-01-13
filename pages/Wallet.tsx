@@ -27,7 +27,7 @@ const WalletPage: React.FC = () => {
           <div className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px]"></div>
       </div>
 
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 text-center">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 text-center scroll-reveal reveal-up">
          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-8 backdrop-blur-sm animate-fade-in-up">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -62,7 +62,7 @@ const WalletPage: React.FC = () => {
 
       <section className="relative z-10 max-w-7xl mx-auto px-4 mb-32">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-              <div className="flex flex-col items-center group">
+              <div className="flex flex-col items-center group scroll-reveal reveal-up">
                  <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 backdrop-blur-sm">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#1a1b26] rounded-b-2xl z-20"></div>
                     <div className="w-full h-full pt-12 pb-8 px-6 flex flex-col relative bg-[#0f1016]/90">
@@ -127,8 +127,8 @@ const WalletPage: React.FC = () => {
                  <p className="mt-2 text-sm text-slate-400 text-center max-w-[250px]">Track all your assets across 10+ chains in one unified dashboard.</p>
               </div>
 
-              <div className="flex flex-col items-center group">
-                 <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 delay-100 backdrop-blur-sm">
+              <div className="flex flex-col items-center group scroll-reveal reveal-up delay-100">
+                 <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 backdrop-blur-sm">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#1a1b26] rounded-b-2xl z-20"></div>
                     <div className="w-full h-full pt-12 pb-8 px-6 flex flex-col relative bg-[#0f1016]/90">
                         <div className="text-center mb-8">
@@ -188,8 +188,8 @@ const WalletPage: React.FC = () => {
                  <p className="mt-2 text-sm text-slate-400 text-center max-w-[250px]">Swap tokens instantly at the best rates with zero hidden fees.</p>
               </div>
 
-              <div className="flex flex-col items-center group">
-                 <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 delay-200 backdrop-blur-sm">
+              <div className="flex flex-col items-center group scroll-reveal reveal-up delay-200">
+                 <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 backdrop-blur-sm">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#1a1b26] rounded-b-2xl z-20"></div>
                     <div className="w-full h-full pt-12 pb-8 px-6 flex flex-col relative bg-[#0f1016]/90">
                         <div className="flex justify-between items-center mb-6">
@@ -267,12 +267,12 @@ const WalletPage: React.FC = () => {
                  <p className="mt-2 text-sm text-slate-400 text-center max-w-[250px]">Freeze cards, view details, and manage spending limits instantly.</p>
               </div>
 
-              <div className="flex flex-col items-center group">
-                 <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 delay-300 backdrop-blur-sm">
+              <div className="flex flex-col items-center group scroll-reveal reveal-up delay-300">
+                 <div className="relative w-[300px] h-[620px] rounded-[3rem] border-[8px] border-[#1a1b26]/50 shadow-2xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-4 backdrop-blur-sm">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#1a1b26] rounded-b-2xl z-20"></div>
                     <div className="w-full h-full pt-12 pb-8 px-6 flex flex-col relative bg-[#0f1016]/90">
                         <div className="flex justify-between items-center mb-6">
-                           <h2 className="text-lg font-bold text-white">Parmaweb</h2>
+                           <h2 className="text-lg font-bold text-white">Hosting Protocol</h2>
                            <Server size={20} className="text-orange-400" />
                         </div>
                         <div className="relative mb-8">
@@ -333,7 +333,7 @@ const WalletPage: React.FC = () => {
 
       <section className="max-w-7xl mx-auto px-4 py-20 border-t border-slate-800/50">
          <div className="grid md:grid-cols-3 gap-12">
-            <div className="space-y-4">
+            <div className="space-y-4 scroll-reveal reveal-left">
                <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4">
                   <ShieldCheck size={24} />
                </div>
@@ -342,7 +342,7 @@ const WalletPage: React.FC = () => {
                   You are the only one with access to your funds. Your private keys are encrypted on your device and never shared with our servers.
                </p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 scroll-reveal reveal-up">
                <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4">
                   <Zap size={24} />
                </div>
@@ -351,13 +351,13 @@ const WalletPage: React.FC = () => {
                   Built on Fluid Chain's high-performance architecture, transactions confirm in milliseconds, not minutes.
                </p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 scroll-reveal reveal-right">
                <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-400 mb-4">
                   <Globe size={24} />
                </div>
                <h3 className="text-2xl font-bold text-white">Truly Decentralized</h3>
                <p className="text-slate-400 leading-relaxed">
-                  Access DApps directly from the browser. Host content permanently on Parmaweb without fear of takedowns.
+                  Access DApps directly from the browser. Host content permanently on Hosting Protocol without fear of takedowns.
                </p>
             </div>
          </div>

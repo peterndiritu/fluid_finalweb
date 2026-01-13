@@ -37,7 +37,7 @@ const FluidAssistant: React.FC = () => {
     "Fluid Token current price",
     "Fluid Chain network status",
     "How to use Fluid Wallet?",
-    "Explain Parmaweb hosting",
+    "Explain Hosting Protocol",
     "Crypto market news today"
   ];
 

@@ -1,7 +1,5 @@
 {
   "name": "Fluid Ecosystem",
   "description": "The unified Layer-1 blockchain for permanent hosting and high-frequency finance.",
-  "requestFramePermissions": [
-    "geolocation"
-  ]
+  "requestFramePermissions": []
 }

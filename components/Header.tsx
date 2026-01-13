@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, ShoppingCart, Download, LayoutGrid, Globe, Wallet, Cpu, Info, Compass, LifeBuoy, ChevronRight } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, Download, LayoutGrid, Globe, Wallet, Cpu, Info, Compass, LifeBuoy, ChevronRight, Zap, Rocket } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { ConnectButton } from "thirdweb/react";
 import { thirdwebClient } from "../client";
@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       label: 'Ecosystem',
       icon: LayoutGrid,
       children: [
-        { label: 'Blockchain', action: () => handleLinkClick('blockchain') },
+        { label: 'L1 Blockchain', action: () => handleLinkClick('blockchain') },
         { label: 'Hosting', action: () => handleLinkClick('host') },
         { label: 'Fluid DEX', action: () => handleLinkClick('dex') },
         { label: 'Fluid Token', action: () => handleLinkClick('token') },
@@ -75,11 +75,19 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       ]
     },
     {
+      label: 'Investment',
+      icon: Rocket,
+      children: [
+        { label: 'Live Presale', action: () => handleLinkClick('presale') },
+        { label: 'Tokenomics', action: () => handleLinkClick('token') },
+        { label: 'Roadmap', action: () => handleLinkClick('roadmap') },
+      ]
+    },
+    {
       label: 'Resources',
       icon: Compass,
       children: [
         { label: 'About Us', action: () => handleLinkClick('about') },
-        { label: 'Roadmap', action: () => handleLinkClick('roadmap') },
         { label: 'FAQs', action: () => handleLinkClick('faq') },
         { label: 'Support Center', action: () => handleLinkClick('support') },
       ]
@@ -91,7 +99,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
         <div className={`flex items-center justify-between h-16 rounded-2xl px-4 sm:px-6 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/50 dark:border-white/10 shadow-lg' : 'bg-transparent border-transparent'}`}>
           
-          {/* Logo */}
           <div className="flex items-center cursor-pointer group shrink-0" onClick={() => handleLinkClick('home')}>
             <FluidLogo className="mr-2 transition-transform duration-300 group-hover:scale-110" />
             <span className="font-bold text-xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">
@@ -99,7 +106,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
             </span>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1 ml-8" ref={desktopMenuRef}>
             {navStructure.map((item, idx) => (
               <div key={idx} className="relative">
@@ -112,7 +118,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                   <ChevronDown size={14} className={`transition-transform duration-200 ${activeSubmenu === item.label ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Desktop Dropdown */}
                 {activeSubmenu === item.label && (
                   <div className="absolute top-full left-0 mt-2 w-56 backdrop-blur-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up p-2 z-[100]">
                     {item.children.map((child, cIdx) => (
@@ -131,14 +136,13 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
             ))}
           </div>
 
-          {/* Right Side Actions */}
           <div className="flex items-center gap-2 sm:gap-3 ml-auto">
             <button 
-              onClick={() => handleLinkClick('buy')} 
-              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-500/10 group shrink-0"
+              onClick={() => handleLinkClick('presale')} 
+              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-500/10 group shrink-0"
             >
-              <ShoppingCart size={14} className="group-hover:scale-110 transition-transform" />
-              Buy Fluid
+              <Rocket size={14} className="group-hover:animate-bounce transition-transform" />
+              Join Presale
             </button>
             
             <div className="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block"></div>
@@ -155,11 +159,10 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               theme={theme === 'dark' ? 'dark' : 'light'} 
               connectButton={{ 
                 label: "Connect", 
-                style: { borderRadius: '0.75rem', fontSize: '12px', height: '40px', padding: '0 1rem' } 
+                style: { borderRadius: '0.75rem', fontSize: '12px', height: '40px', padding: '0 1rem', background: theme === 'dark' ? '#1e293b' : '#f1f5f9', color: theme === 'dark' ? 'white' : 'black', border: '1px solid rgba(255,255,255,0.1)' } 
               }} 
             />
 
-            {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300"
@@ -170,7 +173,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
 
         </div>
 
-        {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-full left-4 right-4 mt-2 backdrop-blur-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden animate-fade-in-up flex flex-col p-4 max-h-[80vh] overflow-y-auto z-[200]">
             {navStructure.map((item, idx) => (
@@ -205,11 +207,18 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
             <div className="h-px bg-slate-200 dark:bg-slate-800 my-4"></div>
             
             <button 
-              onClick={() => handleLinkClick('buy')}
-              className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-slate-950 font-bold rounded-2xl flex items-center justify-center gap-2"
+              onClick={() => handleLinkClick('presale')}
+              className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold rounded-2xl flex items-center justify-center gap-2 mb-2"
             >
-              <ShoppingCart size={18} />
-              Buy Fluid Token
+              <Rocket size={18} />
+              Join Presale
+            </button>
+            <button 
+              onClick={() => handleLinkClick('wallet')}
+              className="w-full py-4 bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-bold rounded-2xl flex items-center justify-center gap-2"
+            >
+              <Zap size={18} />
+              Open Wallet
             </button>
           </div>
         )}

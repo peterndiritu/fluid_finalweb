@@ -1,5 +1,5 @@
-import { createThirdwebClient } from "thirdweb";
-import { defineChain } from "thirdweb/chains";
+
+import { createThirdwebClient, defineChain } from "thirdweb";
 
 // Thirdweb Client ID
 export const clientId = "ceb162223222ebd17384f91f5a032839";

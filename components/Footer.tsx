@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Download, Mail, Facebook, Send, Twitter, LifeBuoy } from 'lucide-react';
+import { Download, Mail, Facebook, Send, Twitter, LifeBuoy, Rocket } from 'lucide-react';
 import FluidLogo from './FluidLogo';
 
 interface FooterProps {
@@ -44,12 +43,19 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
   const footerSections = [
     {
+      title: 'Investment',
+      links: [
+        { label: 'Join Presale', page: 'presale', highlight: true },
+        { label: 'Fluid Token', page: 'token' },
+        { label: 'Roadmap', page: 'roadmap' },
+      ],
+    },
+    {
       title: 'Ecosystem',
       links: [
         { label: 'Blockchain', page: 'blockchain' },
         { label: 'Hosting', page: 'host' },
         { label: 'Fluid DEX', page: 'dex' },
-        { label: 'Fluid Token', page: 'token' },
       ],
     },
     {
@@ -57,16 +63,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       links: [
         { label: 'Fluid Wallet', page: 'wallet' },
         { label: 'Fluid Cards', page: 'cards' },
-        { label: 'Presale Dashboard', page: 'buy' },
-      ],
-    },
-    {
-      title: 'Resources',
-      links: [
-        { label: 'About Us', page: 'about' },
-        { label: 'Roadmap', page: 'roadmap' },
-        { label: 'FAQs', page: 'faq' },
-        { label: 'Support Center', page: 'support' },
+        { label: 'Support Ticket', page: 'support' },
       ],
     },
     {
@@ -98,8 +95,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 mb-16">
-          
-          {/* Brand Column */}
           <div className="col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => handleLink('home')}>
                <FluidLogo size={32} />
@@ -124,7 +119,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Nav Columns */}
           {footerSections.map((section) => (
             <div key={section.title}>
               <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest mb-6">{section.title}</h4>
@@ -133,8 +127,13 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   <li key={link.label}>
                     <button 
                       onClick={() => handleLink(link.page)}
-                      className="text-sm text-slate-500 hover:text-blue-500 dark:hover:text-cyan-400 transition-colors font-medium"
+                      className={`text-sm transition-colors font-medium flex items-center gap-2 ${
+                        (link as any).highlight 
+                        ? 'text-emerald-500 hover:text-emerald-400' 
+                        : 'text-slate-500 hover:text-blue-500 dark:hover:text-cyan-400'
+                      }`}
                     >
+                      {(link as any).highlight && <Rocket size={14} />}
                       {link.label}
                     </button>
                   </li>
@@ -145,7 +144,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-6 md:gap-8 order-2 md:order-1">
             <p className="text-slate-500 text-xs">© {currentYear} Fluid Finance. All rights reserved.</p>

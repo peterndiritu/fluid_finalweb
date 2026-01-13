@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Cpu, Server, ShieldCheck, Database, ArrowLeftRight, CreditCard, Zap, Globe, Activity, MapPin } from 'lucide-react';
+import { ArrowRight, Cpu, Server, ShieldCheck, Database, ArrowLeftRight, CreditCard, Zap, Globe, Activity, MapPin, Rocket } from 'lucide-react';
 import FluidAssistant from '../components/FluidAssistant';
 import FluidLogo from '../components/FluidLogo';
 
@@ -28,7 +27,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       link: "blockchain"
     },
     {
-      title: "Parmaweb Protocol",
+      title: "Hosting Protocol",
       desc: "Permanent web hosting. Pay once in $Fluid to host dApps eternally with 100% uptime.",
       icon: Server,
       color: "text-emerald-400",
@@ -70,46 +69,73 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-[#020617] relative">
+      {/* Huge Background Watermark */}
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden opacity-[0.03]">
+        <FluidLogo size={1200} className="transform -rotate-12 translate-x-1/4 scale-150" />
+      </div>
+
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full z-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[120px]"></div>
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[120px]"></div>
+      <section className="relative pt-32 pb-16 overflow-hidden flex flex-col items-center justify-center min-h-[90vh] z-10">
+        {/* Background Grid & Glows */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-tech-grid opacity-20"></div>
+          <div className="absolute top-[10%] right-[10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[160px]"></div>
+          <div className="absolute bottom-[20%] left-[5%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px]"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <button 
-            onClick={() => onNavigate('buy')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/40 border border-slate-700/50 mb-8 backdrop-blur-sm hover:bg-slate-800/50 transition-colors group"
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center scroll-reveal reveal-up">
+          {/* LIVE PRESALE Badge */}
+          <div 
+            onClick={() => onNavigate('presale')}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/30 mb-6 backdrop-blur-sm cursor-pointer hover:bg-[#10b981]/20 transition-all group"
           >
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-emerald-400 text-xs font-bold tracking-widest uppercase">Infrastructure Presale Live</span>
-            <ArrowRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-transform" />
-          </button>
+            <span className="text-[#10b981] text-[10px] font-black tracking-[0.4em] uppercase">Live Presale</span>
+          </div>
 
-          <h1 className="text-6xl md:text-8xl font-extrabold text-white mb-8 tracking-tighter leading-[0.9]">
-            The Fluid <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-emerald-400 to-cyan-500">Ecosystem</span>
+          {/* Fluid Title */}
+          <h1 className="text-[100px] md:text-[200px] font-black text-white tracking-[-0.06em] leading-[0.8] uppercase italic mb-4 select-none">
+            Fluid
           </h1>
           
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-12 font-medium">
-            Scaling the future of finance with institutional-grade Layer-1 blockchain infrastructure and permanent web hosting.
-          </p>
+          {/* Main Tagline - Color Gradient Applied */}
+          <div className="mb-4">
+            <h2 className="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-cyan-400 tracking-tighter italic uppercase leading-none">
+              Store. Spend. Host.
+            </h2>
+          </div>
 
+          {/* Secondary Tagline - Refined Color Gradient Applied */}
+          <div className="mb-8">
+            <p className="text-xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-400 uppercase tracking-widest italic">
+              Infinitely & Eternally.
+            </p>
+          </div>
+
+          {/* Detailed Paragraph */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <p className="text-slate-400 text-lg md:text-xl font-medium leading-relaxed">
+              The foundation for consensual computation—combining decentralized infrastructure, 
+              private messaging, and a high-performance Layer-1 blockchain built for open, 
+              serverless, and permissionless applications & a secure multichain non-custodial wallet.
+            </p>
+          </div>
+
+          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
              <button 
-              onClick={() => onNavigate('buy')}
-              className="px-12 py-5 bg-white text-slate-950 font-bold rounded-2xl text-lg hover:scale-105 transition-transform shadow-2xl flex items-center justify-center gap-2"
+              onClick={() => onNavigate('presale')}
+              className="px-12 py-5 bg-[#10b981] hover:bg-[#059669] text-[#020617] font-black rounded-xl text-lg hover:scale-105 transition-all shadow-[0_0_40px_rgba(16,185,129,0.3)] flex items-center justify-center gap-3 uppercase tracking-tighter"
              >
-               Buy $Fluid <ArrowRight size={20} />
+               Enter Presale <Rocket size={22} className="fill-current" />
              </button>
              <button 
               onClick={() => onNavigate('blockchain')}
-              className="px-12 py-5 bg-slate-900 text-white border border-slate-800 font-bold rounded-2xl text-lg hover:bg-slate-800 transition-colors"
+              className="px-12 py-5 bg-[#111827] text-white border border-slate-700/50 font-black rounded-xl text-lg hover:bg-slate-800 transition-colors uppercase tracking-tighter"
              >
                Explore Tech
              </button>
@@ -117,66 +143,86 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Infrastructure Visualization */}
-      <section className="py-24 relative overflow-hidden bg-slate-950 border-y border-white/5">
-        <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="scroll-card">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-6">
-                <Globe size={14} /> Globalised Hosting Infrastructure
+      {/* Stats Bar */}
+      <section className="relative py-10 bg-[#020617] border-y border-white/5 backdrop-blur-sm z-10 scroll-reveal reveal-scale">
+        <div className="max-w-6xl mx-auto px-4">
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 items-center">
+              <div className="text-center md:border-r md:border-white/5 py-4">
+                 <div className="text-5xl font-black text-white mb-1 tracking-tighter">$1.00</div>
+                 <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">Initial Price</div>
               </div>
-              <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-8 leading-tight">
+              <div className="text-center md:border-r md:border-white/5 py-4">
+                 <div className="text-5xl font-black text-white mb-1 tracking-tighter">2.4M+</div>
+                 <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">TPS Capacity</div>
+              </div>
+              <div className="text-center md:border-r md:border-white/5 py-4">
+                 <div className="text-5xl font-black text-white mb-1 tracking-tighter">150+</div>
+                 <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">Global Nodes</div>
+              </div>
+              <div className="text-center py-4">
+                 <div className="text-5xl font-black text-[#10b981] mb-1 tracking-tighter">72%</div>
+                 <div className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">Stage 1 Sold</div>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Hosting Section */}
+      <section className="relative py-16 overflow-hidden bg-[#020617] z-10">
+        <div className="absolute inset-0 opacity-5 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="scroll-reveal reveal-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10b981]/10 border border-[#10b981]/20 text-[#10b981] text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+                <Globe size={14} /> Globalised Hosting
+              </div>
+              <h2 className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter">
                 Global Nodes. <br/>
-                <span className="text-emerald-400 underline decoration-emerald-500/30">Infinite Uptime.</span>
+                <span className="text-[#10b981]">Infinite Uptime.</span>
               </h2>
-              <p className="text-slate-400 text-lg mb-10 leading-relaxed">
-                Fluid's Parmaweb protocol distributes your dApps across a decentralized mesh of institutional-grade nodes. No single point of failure, no centralized hosting risks.
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed max-w-xl font-bold">
+                Fluid's Hosting Protocol distributes your dApps across a decentralized mesh of institutional-grade nodes.
               </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
-                  <div className="text-3xl font-mono font-bold text-white mb-1">100%</div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Storage Redundancy</div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-6 bg-white/5 rounded-[2rem] border border-white/5 shadow-inner">
+                  <div className="text-4xl font-mono font-black text-white mb-1 tracking-tighter">100%</div>
+                  <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Storage Redundancy</div>
                 </div>
-                <div className="p-6 bg-white/5 rounded-3xl border border-white/10">
-                  <div className="text-3xl font-mono font-bold text-white mb-1">~0ms</div>
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">CDN Latency</div>
+                <div className="p-6 bg-white/5 rounded-[2rem] border border-white/5 shadow-inner">
+                  <div className="text-4xl font-mono font-black text-white mb-1 tracking-tighter">~0ms</div>
+                  <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest">CDN Latency</div>
                 </div>
               </div>
             </div>
 
-            {/* Map/Mesh Visualization */}
-            <div className="relative aspect-square md:aspect-video bg-slate-900/40 rounded-[3rem] border border-white/10 overflow-hidden flex items-center justify-center group scroll-card">
-               <div className="absolute inset-0 bg-tech-grid opacity-30"></div>
-               <div className="relative w-full h-full p-12">
-                  <div className="absolute top-[20%] left-[30%] animate-pulse">
+            <div className="relative aspect-square md:aspect-video bg-[#0f172a]/20 rounded-[4rem] border border-white/5 overflow-hidden flex items-center justify-center group scroll-reveal reveal-right">
+               <div className="absolute inset-0 bg-tech-grid opacity-20"></div>
+               <div className="relative w-full h-full p-8">
+                  <div className="absolute top-[25%] left-[35%] animate-pulse">
                      <MapPin className="text-emerald-500" size={24} />
                      <div className="absolute top-0 left-0 w-6 h-6 bg-emerald-500/40 rounded-full animate-ping"></div>
                   </div>
-                  <div className="absolute top-[50%] left-[70%] animate-pulse delay-700">
+                  <div className="absolute top-[45%] left-[65%] animate-pulse delay-700">
                      <MapPin className="text-blue-500" size={24} />
                      <div className="absolute top-0 left-0 w-6 h-6 bg-blue-500/40 rounded-full animate-ping"></div>
                   </div>
-                  <div className="absolute bottom-[25%] left-[15%] animate-pulse delay-300">
+                  <div className="absolute bottom-[30%] left-[20%] animate-pulse delay-300">
                      <MapPin className="text-cyan-500" size={24} />
                      <div className="absolute top-0 left-0 w-6 h-6 bg-cyan-500/40 rounded-full animate-ping"></div>
                   </div>
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="32%" y1="24%" x2="72%" y2="54%" stroke="white" strokeWidth="1" strokeDasharray="4 4" className="opacity-20" />
-                    <line x1="17%" y1="78%" x2="32%" y2="24%" stroke="white" strokeWidth="1" strokeDasharray="4 4" className="opacity-20" />
-                  </svg>
-                  <div className="absolute bottom-8 right-8 p-6 bg-slate-950/80 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl">
+                  
+                  <div className="absolute bottom-6 right-6 p-6 bg-[#020617]/95 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl min-w-[200px]">
                      <div className="flex items-center gap-3 mb-4">
                         <Activity className="text-emerald-400" size={16} />
-                        <span className="text-[10px] font-bold text-white uppercase tracking-widest">Node Network Health</span>
+                        <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">Network Status</span>
                      </div>
-                     <div className="space-y-3">
-                        <div className="flex justify-between gap-8 text-[10px] font-bold text-slate-500 uppercase">
+                     <div className="space-y-4">
+                        <div className="flex justify-between gap-8 text-[10px] font-black text-slate-500 uppercase">
                            <span>Active Nodes</span>
                            <span className="text-emerald-400">1,248</span>
                         </div>
-                        <div className="w-48 h-1 bg-slate-800 rounded-full overflow-hidden">
-                           <div className="w-[92%] h-full bg-emerald-500"></div>
+                        <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                           <div className="w-[92%] h-full bg-emerald-500 shadow-[0_0_15px_#10b981]"></div>
                         </div>
                      </div>
                   </div>
@@ -186,29 +232,29 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Grid Section */}
-      <section className="py-24 bg-slate-950/50 relative">
+      {/* Feature Grid */}
+      <section className="relative py-12 bg-[#020617] z-10">
         <div className="max-w-7xl mx-auto px-4">
-           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {coreComponents.map((item, idx) => (
                 <div 
                   key={idx} 
                   onClick={() => onNavigate(item.link)}
-                  className="group p-10 bg-slate-900/40 border border-slate-800 rounded-[2.5rem] hover:border-blue-500/30 transition-all cursor-pointer relative overflow-hidden flex flex-col shadow-xl scroll-card"
+                  className={`group p-8 bg-[#0f172a]/20 border border-white/5 rounded-[3rem] hover:border-blue-500/30 transition-all cursor-pointer relative overflow-hidden flex flex-col shadow-2xl scroll-reveal reveal-up delay-${(idx % 3) * 100}`}
                 >
-                   <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-8 ${item.color} group-hover:scale-110 transition-transform`}>
+                   <div className={`w-14 h-14 ${item.bg} rounded-2xl flex items-center justify-center mb-6 ${item.color} group-hover:scale-110 transition-transform`}>
                       <item.icon size={28} />
                    </div>
-                   <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                   <h3 className="text-2xl font-black text-white mb-4 flex items-center gap-2 uppercase italic tracking-tighter">
                       {item.title}
                       <ArrowRight size={18} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-400" />
                    </h3>
-                   <p className="text-slate-500 group-hover:text-slate-400 transition-colors leading-relaxed font-medium mb-8">
+                   <p className="text-slate-500 group-hover:text-slate-400 transition-colors leading-relaxed font-bold text-sm mb-8">
                       {item.desc}
                    </p>
-                   <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-600 group-hover:text-blue-400">
-                      <span>Explore</span>
-                      <FluidLogo size={16} className="opacity-20 group-hover:opacity-100" />
+                   <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-600 group-hover:text-blue-400">
+                      <span>Explore Protocol</span>
+                      <FluidLogo size={16} className="opacity-10 group-hover:opacity-100" />
                    </div>
                 </div>
               ))}
@@ -216,26 +262,5 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* AI Assistant */}
-      <FluidAssistant />
-
-      {/* Stats Footer */}
-      <section className="py-16 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
-           <div className="text-center md:text-left">
-              <h2 className="text-3xl font-bold text-white mb-2">Institutional-Grade Security</h2>
-              <p className="text-slate-500 font-medium uppercase tracking-widest text-[10px]">40% Revenue Redistribution to Holders</p>
-           </div>
-           <div className="flex flex-col items-center md:items-end">
-              <div className="text-4xl font-mono font-extrabold text-emerald-400">
-                 ${totalDistributed.toLocaleString()}
-              </div>
-              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Revenue Shared with Community</div>
-           </div>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-export default Home;
+      {/* Final CTA */}
+      <section className="relative py-16 overflow-hidden bg-[#0206

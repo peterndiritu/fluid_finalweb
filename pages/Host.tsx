@@ -26,7 +26,7 @@ const HostPage: React.FC = () => {
     { type: 'command', text: 'npm install -g fluid-cli', delay: 500 },
     { type: 'output', content: ['<span class="text-slate-400">+ fluid-cli@1.0.4</span>', '<span class="text-slate-400">added 12 packages in 2s</span>'], delay: 400 },
     { type: 'command', text: 'fluid init', delay: 800 },
-    { type: 'output', content: ['<span class="text-blue-400">?</span> Project name: <span class="text-white">awesome-dapp</span>', '<span class="text-blue-400">?</span> Framework: <span class="text-white">React / Next.js</span>', '<span class="text-blue-400">?</span> Storage: <span class="text-white">Permanent (Parmaweb)</span>'], delay: 600 },
+    { type: 'output', content: ['<span class="text-blue-400">?</span> Project name: <span class="text-white">awesome-dapp</span>', '<span class="text-blue-400">?</span> Framework: <span class="text-white">React / Next.js</span>', '<span class="text-blue-400">?</span> Storage: <span class="text-white">Permanent (Hosting Protocol)</span>'], delay: 600 },
     { type: 'command', text: 'fluid deploy', delay: 800 },
     { type: 'output', content: ['<span class="text-slate-300">> Building project...</span>', '<span class="text-slate-300">> Uploading assets to Shard 1...</span>', '<span class="text-slate-300">> Uploading assets to Shard 2...</span>', '<span class="text-slate-300">> Verifying integrity...</span>'], delay: 600 },
     { type: 'output', content: ['<span class="text-emerald-400 font-bold">✔ Deployment Successful!</span>', 'Access your app at: <span class="underline text-blue-400 cursor-pointer hover:text-blue-300">https://fluid.link/awesome-dapp</span>'], delay: 400 }
@@ -125,7 +125,7 @@ const HostPage: React.FC = () => {
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 text-center">
          <div className="inline-block px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/30 mb-6 animate-pulse">
-            <span className="text-indigo-500 font-bold uppercase tracking-wider text-sm">Parmaweb Protocol V1</span>
+            <span className="text-indigo-500 font-bold uppercase tracking-wider text-sm">Hosting Protocol V1</span>
          </div>
          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-6">
             The Permanent Web. <br/>
@@ -203,7 +203,7 @@ const HostPage: React.FC = () => {
           
           <div className="text-center mb-10 relative z-10">
              <h2 className="text-3xl font-extrabold text-white mb-2">Claim Your Web3 Identity</h2>
-             <p className="text-slate-400">Mint your decentralized domain instantly. Free when deploying to Parmaweb.</p>
+             <p className="text-slate-400">Mint your decentralized domain instantly. Free when deploying to Hosting Protocol.</p>
           </div>
 
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative z-10 overflow-hidden">
@@ -321,7 +321,7 @@ const HostPage: React.FC = () => {
                                     <div className="absolute inset-0 border-4 border-t-indigo-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
                                     <Rocket className="absolute inset-0 m-auto text-indigo-400 animate-pulse" size={24} />
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-2">Deploying to Parmaweb</h3>
+                                <h3 className="text-xl font-bold text-white mb-2">Deploying to Hosting Protocol</h3>
                                 <div className="space-y-2 text-sm text-slate-400">
                                     <p className={deployStage >= 1 ? "text-emerald-400 flex items-center justify-center gap-2" : "opacity-50"}>
                                        {deployStage >= 1 && <Check size={14} />} Minting <span className="text-white font-mono">{domainQuery}.fluid</span>...
@@ -384,7 +384,7 @@ const HostPage: React.FC = () => {
                   </p>
                </div>
 
-               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
+               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
                   <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6 text-emerald-500 group-hover:scale-110 transition-transform">
                      <Database size={24} />
                   </div>
@@ -394,7 +394,7 @@ const HostPage: React.FC = () => {
                   </p>
                </div>
 
-               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
+               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
                   <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-500 group-hover:scale-110 transition-transform">
                      <Globe size={24} />
                   </div>
@@ -404,7 +404,7 @@ const HostPage: React.FC = () => {
                   </p>
                </div>
 
-               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
+               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
                   <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-6 text-orange-500 group-hover:scale-110 transition-transform">
                      <Cpu size={24} />
                   </div>
@@ -414,7 +414,7 @@ const HostPage: React.FC = () => {
                   </p>
                </div>
 
-               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
+               <div className="p-8 bg-white dark:bg-slate-950 border border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors group">
                   <div className="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center mb-6 text-pink-500 group-hover:scale-110 transition-transform">
                      <ArrowRight size={24} />
                   </div>

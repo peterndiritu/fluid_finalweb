@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -14,8 +13,8 @@ import FaqPage from './pages/FaqPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import BlockchainPage from './pages/BlockchainPage';
-import BuyPage from './pages/BuyPage';
 import SupportPage from './pages/SupportPage';
+import BuyPage from './pages/BuyPage';
 import IntroScreen from './components/IntroScreen';
 import { useAutoConnect } from 'thirdweb/react';
 import { createWallet } from 'thirdweb/wallets';
@@ -40,7 +39,6 @@ const App: React.FC = () => {
   const renderPage = () => {
     switch(currentPage) {
       case 'home': return <Home onNavigate={setCurrentPage} />;
-      case 'buy': return <BuyPage />;
       case 'blockchain': return <BlockchainPage />;
       case 'wallet': return <WalletPage />;
       case 'dex': return <DexPage />;
@@ -53,6 +51,7 @@ const App: React.FC = () => {
       case 'terms': return <TermsPage />;
       case 'privacy': return <PrivacyPage />;
       case 'support': return <SupportPage />;
+      case 'presale': return <BuyPage />;
       default: return <Home onNavigate={setCurrentPage} />;
     }
   };
