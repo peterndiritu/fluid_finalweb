@@ -60,6 +60,12 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
     setMobileSubmenu(mobileSubmenu === menu ? null : menu);
   };
 
+  const appMetadata = {
+    name: "Fluid",
+    url: "https://fluid.finance",
+    description: "Next-gen crypto presale platform and blockchain hosting.",
+  };
+
   const navStructure = [
     {
       label: 'Products',
@@ -166,6 +172,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               client={client} 
               wallets={wallets}
               theme={theme}
+              appMetadata={appMetadata}
               connectButton={{
                 className: "!bg-slate-900 dark:!bg-white !text-white dark:!text-slate-900 !rounded-xl !px-5 !py-2 !text-xs !font-bold !h-10 hover:!opacity-90 transition-opacity !border-none"
               }}
@@ -245,6 +252,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                   client={client} 
                   wallets={wallets}
                   theme={theme}
+                  appMetadata={appMetadata}
                   connectButton={{
                     className: "!w-full !bg-slate-900 dark:!bg-white !text-white dark:!text-slate-900 !rounded-xl !py-4 !text-sm !font-bold !h-12 !border-none shadow-lg"
                   }}

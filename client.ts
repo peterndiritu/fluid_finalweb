@@ -6,10 +6,11 @@ export const client = createThirdwebClient({
 });
 
 export const wallets = [
-  inAppWallet({
-    auth: { options: ["google", "email", "passkey", "phone"] }
-  }),
   createWallet("io.metamask"),
   createWallet("com.coinbase.wallet"),
   createWallet("me.rainbow"),
+  createWallet("com.walletconnect"), // Essential for universal mobile wallet discovery
+  inAppWallet({
+    auth: { options: ["google", "email", "passkey", "phone"] }
+  }),
 ];

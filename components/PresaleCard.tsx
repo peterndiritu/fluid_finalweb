@@ -315,6 +315,11 @@ const PresaleCard: React.FC = () => {
                         client={client}
                         wallets={wallets}
                         theme={"dark"}
+                        appMetadata={{
+                          name: "Fluid",
+                          url: "https://fluid.finance",
+                          description: "Next-gen crypto presale platform",
+                        }}
                         connectButton={{
                             label: "Connect Wallet",
                             className: "!w-full !py-4 !rounded-xl !text-lg !font-bold !bg-white !text-black !border-none hover:!bg-gray-200 transition-all shadow-lg"
