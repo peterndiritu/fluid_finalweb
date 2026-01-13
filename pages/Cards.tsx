@@ -1,7 +1,7 @@
 import React from 'react';
 import { CreditCard, Globe, Lock, Sliders, Smartphone, Wifi, Zap, RefreshCw, ShieldCheck, ShoppingBag, Layers } from 'lucide-react';
 
-const FluidBrand = ({ className = "text-white" }: { className?: string }) => (
+const FluidBrand = ({ className = "" }: { className?: string }) => (
   <div className={`flex items-center gap-1.5 ${className}`}>
     <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -13,7 +13,7 @@ const FluidBrand = ({ className = "text-white" }: { className?: string }) => (
         <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#brandLogoGradient)" />
         <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#brandLogoGradient)" />
     </svg>
-    <span className="font-bold text-xl tracking-tighter italic">fluid</span>
+    <span className="font-bold text-xl tracking-tighter italic text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">Fluid</span>
   </div>
 );
 
@@ -40,14 +40,13 @@ const CardsPage: React.FC = () => {
                 <div className="absolute inset-0 bg-cyan-500/30 blur-[60px] rounded-full group-hover:opacity-100 transition-opacity duration-500"></div>
                 
                 <div className="relative h-full w-full rounded-2xl bg-white/5 backdrop-blur-xl border border-white/20 shadow-2xl p-6 flex flex-col justify-between transform transition-transform duration-500 group-hover:rotate-y-6 group-hover:rotate-x-6 overflow-hidden">
-                    {/* Holographic Sheen */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-cyan-500/10 opacity-50"></div>
                     <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl"></div>
 
                     <div className="flex justify-between items-start z-10">
                         <span className="font-bold text-xl text-white tracking-tighter flex items-center gap-2">
                            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500"></div>
-                           fluid <span className="text-[10px] uppercase font-normal text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">Virtual</span>
+                           Fluid <span className="text-[10px] uppercase font-normal text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">Virtual</span>
                         </span>
                         <Wifi size={24} className="text-white/50 rotate-90" />
                     </div>
@@ -80,10 +79,7 @@ const CardsPage: React.FC = () => {
            {/* 2. The Physical Card (Metal/Dark) */}
            <div className="relative group w-full max-w-[340px] h-[214px] transition-all duration-500 hover:z-20 md:hover:scale-110 md:-ml-20 mt-[-80px] md:mt-0 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <div className="absolute inset-0 bg-black rounded-2xl"></div>
-                
                 <div className="relative h-full w-full rounded-2xl bg-gradient-to-br from-[#1a1b26] via-[#0f1016] to-black border border-slate-700 p-6 flex flex-col justify-between transform transition-transform duration-500 group-hover:rotate-y-[-6deg] group-hover:rotate-x-6 overflow-hidden">
-                    
-                    {/* Metal Texture */}
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
                     <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-white/5 to-transparent rounded-full -mr-16 -mt-16 pointer-events-none"></div>
 
@@ -122,8 +118,6 @@ const CardsPage: React.FC = () => {
       {/* Feature Grid */}
       <section className="max-w-7xl mx-auto px-4 mb-24">
          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            {/* Virtual Card Features */}
             <div className="col-span-1 lg:col-span-2 bg-slate-900/50 border border-slate-800 rounded-3xl p-8 relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors"></div>
                 <div className="relative z-10">
@@ -151,7 +145,6 @@ const CardsPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Physical Card Features */}
             <div className="bg-gradient-to-b from-slate-900 to-black border border-slate-800 rounded-3xl p-8 relative overflow-hidden group hover:border-slate-600 transition-colors">
                 <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
                     <CreditCard size={24} />
@@ -176,7 +169,6 @@ const CardsPage: React.FC = () => {
                 </ul>
             </div>
 
-            {/* Ecosystem Features */}
             <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-8 hover:border-blue-500/30 transition-colors group">
                 <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-400">
                     <Smartphone size={24} />
@@ -193,7 +185,7 @@ const CardsPage: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">3% Crypto Cashback</h3>
                 <p className="text-slate-400 text-sm">
-                    Earn rewards in FLUID, BTC, or ETH on every purchase. Staking FLUID increases your tier.
+                    Earn rewards in Fluid, BTC, or ETH on every purchase. Staking Fluid increases your tier.
                 </p>
             </div>
 
@@ -206,18 +198,15 @@ const CardsPage: React.FC = () => {
                     Freeze cards, set monthly spending limits, and block specific merchant categories instantly.
                 </p>
             </div>
-
          </div>
       </section>
       
-      {/* CTA */}
       <section className="text-center">
           <button className="px-10 py-4 bg-white text-slate-900 font-bold rounded-full text-lg hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.2)]">
              Get Your Card
           </button>
           <p className="mt-4 text-slate-500 text-xs">Available in EEA, UK, and US. KYC required for physical cards.</p>
       </section>
-
     </div>
   );
 };

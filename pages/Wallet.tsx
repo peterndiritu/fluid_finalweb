@@ -324,7 +324,7 @@ const WalletPage: React.FC = () => {
 
                         {/* Domain Search */}
                         <div className="relative mb-8">
-                           <input type="text" placeholder="Find your .fluid domain" className="w-full bg-[#1c1e2b] border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500" />
+                           <input type="text" placeholder="Find your .Fluid domain" className="w-full bg-[#1c1e2b] border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500" />
                            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                         </div>
 
@@ -337,7 +337,7 @@ const WalletPage: React.FC = () => {
                                     <Globe size={16} />
                                  </div>
                                  <div>
-                                    <div className="text-sm font-bold text-white">alex.fluid</div>
+                                    <div className="text-sm font-bold text-white">alex.Fluid</div>
                                     <div className="text-[10px] text-emerald-500 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active</div>
                                  </div>
                               </div>

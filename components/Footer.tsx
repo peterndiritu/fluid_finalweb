@@ -4,22 +4,23 @@ import { Download, Mail, Facebook } from 'lucide-react';
 const Footer: React.FC = () => {
   const handleDownloadLogo = () => {
     const svgContent = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100">
+      <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 120 100">
         <defs>
-          <linearGradient id="downloadLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="footerDlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#3b82f6" />
             <stop offset="100%" stop-color="#10b981" />
           </linearGradient>
         </defs>
-        <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#downloadLogoGradient)" />
-        <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#downloadLogoGradient)" />
+        <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#footerDlGrad)" />
+        <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#footerDlGrad)" />
+        <text x="5" y="90" font-family="Arial" font-weight="bold" font-size="28" fill="url(#footerDlGrad)">Fluid</text>
       </svg>
     `;
     const blob = new Blob([svgContent], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'fluid-logo.svg';
+    link.download = 'Fluid-logo-transparent.svg';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -37,11 +38,7 @@ const Footer: React.FC = () => {
         </svg>
       ) 
     },
-    { 
-      name: 'Facebook', 
-      url: 'https://facebook.com/fluid',
-      icon: <Facebook size={20} />
-    },
+    { name: 'Facebook', url: 'https://facebook.com/fluid', icon: <Facebook size={20} /> },
     { 
       name: 'Telegram', 
       url: 'https://t.me/fluid',
@@ -66,23 +63,13 @@ const Footer: React.FC = () => {
         </svg>
       )
     },
-    { 
-      name: 'Email', 
-      url: 'mailto:support@fluid.finance',
-      icon: <Mail size={20} />
-    }
+    { name: 'Email', url: 'mailto:support@fluid.finance', icon: <Mail size={20} /> }
   ];
 
   return (
     <footer className="py-12 relative z-10 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 text-center">
-          
-          {/* Downloadable Logo Section */}
-          <button 
-            onClick={handleDownloadLogo}
-            className="group relative flex items-center justify-center mb-8 mx-auto"
-            title="Download Brand Asset"
-          >
+          <button onClick={handleDownloadLogo} className="group relative flex items-center justify-center mb-8 mx-auto" title="Download Brand Asset">
               <div className="w-12 h-12 flex items-center justify-center mr-2 transition-all group-hover:scale-110 z-10">
                  <svg width="48" height="48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -95,35 +82,23 @@ const Footer: React.FC = () => {
                     <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#footerLogoGradient)" />
                  </svg>
               </div>
-              <span className="font-bold text-2xl tracking-tighter text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">fluid</span>
-              
+              <span className="font-bold text-2xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400 group-hover:opacity-80 transition-opacity">Fluid</span>
               <div className="absolute -right-32 top-1/2 -translate-y-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none flex items-center gap-1">
-                  <Download size={10} /> Click to Download
+                  <Download size={10} /> Click to Download Logo
               </div>
           </button>
-
-          {/* Social Icons */}
           <div className="flex justify-center gap-6 mb-8">
             {socialLinks.map((link) => (
-              <a 
-                key={link.name}
-                href={link.url}
-                target="_blank" 
-                rel="noreferrer"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white dark:hover:bg-cyan-500 dark:hover:text-black transition-all duration-300 backdrop-blur-sm"
-                title={link.name}
-              >
+              <a key={link.name} href={link.url} target="_blank" rel="noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white dark:hover:bg-cyan-500 dark:hover:text-black transition-all duration-300 backdrop-blur-sm" title={link.name}>
                 {link.icon}
               </a>
             ))}
           </div>
-
           <div className="flex justify-center gap-6 mb-6 text-sm text-slate-600 dark:text-slate-400 font-medium">
             <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</a>
             <button onClick={handleDownloadLogo} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Brand Kit</button>
           </div>
-
           <p className="text-slate-500 dark:text-slate-500 text-sm font-medium">© 2024 Fluid Finance. All rights reserved.</p>
       </div>
     </footer>
