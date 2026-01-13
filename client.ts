@@ -2,8 +2,8 @@ import { createAppKit } from '@reown/appkit/react'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { mainnet, bsc, polygon } from '@reown/appkit/networks'
 
-// Using the provided ID as the Project ID for Reown (AppKit)
-export const projectId = "9d30a8dffb4aac7ac965e54d6b028699";
+// Using the updated Project ID for Reown (AppKit)
+export const projectId = "ceb162223222ebd17384f91f5a032839";
 
 const networks = [mainnet, bsc, polygon];
 
