@@ -87,7 +87,7 @@ const WalletPage: React.FC = () => {
                         {/* Balance */}
                         <div className="text-center mb-8">
                            <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Total Balance</span>
-                           <h2 className="text-4xl font-bold text-white mt-2 mb-2">$124,592<span className="text-slate-500 text-2xl">.45</span></h2>
+                           <h2 className="text-4xl font-bold text-white mt-2 mb-2">$146,092<span className="text-slate-500 text-2xl">.45</span></h2>
                            <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs font-bold">
                               <ArrowUpRight size={12} /> +$1,240 (2.4%)
                            </div>
@@ -114,7 +114,7 @@ const WalletPage: React.FC = () => {
                         <div className="flex-1 space-y-4">
                            <h3 className="text-sm font-bold text-slate-500 mb-2">Assets</h3>
                            {[
-                              { name: 'Fluid', symbol: 'FLD', amount: '45,000', price: '$22,500', color: 'text-cyan-400' },
+                              { name: 'Fluid', symbol: 'FLD', amount: '45,000', price: '$45,000', color: 'text-cyan-400' },
                               { name: 'Ethereum', symbol: 'ETH', amount: '12.5', price: '$38,240', color: 'text-blue-400' },
                               { name: 'Tether', symbol: 'USDT', amount: '63,852', price: '$63,852', color: 'text-emerald-400' },
                            ].map((coin, i) => (
@@ -184,7 +184,7 @@ const WalletPage: React.FC = () => {
                                  <span>Balance: 0 FLD</span>
                               </div>
                               <div className="flex justify-between items-center">
-                                 <span className="text-3xl font-bold text-cyan-400">9,184</span>
+                                 <span className="text-3xl font-bold text-cyan-400">4,592</span>
                                  <button className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-slate-700">
                                     <FluidLogo className="w-5 h-5 text-cyan-400" />
                                     <span className="font-bold text-sm">FLD</span>
@@ -198,7 +198,7 @@ const WalletPage: React.FC = () => {
                            <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-800 space-y-2 mb-8">
                               <div className="flex justify-between text-xs">
                                  <span className="text-slate-400">Rate</span>
-                                 <span className="text-white font-medium">1 ETH = 6,122 FLD</span>
+                                 <span className="text-white font-medium">1 ETH = 3,061 FLD</span>
                               </div>
                               <div className="flex justify-between text-xs">
                                  <span className="text-slate-400">Network Fee</span>

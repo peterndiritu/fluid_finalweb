@@ -1,11 +1,10 @@
+
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize Gemini Client safely
-// Ensure process.env.API_KEY is accessed safely to avoid crashes if process is undefined (handled by polyfill in index.html)
-const apiKey = typeof process !== "undefined" && process.env ? process.env.API_KEY : "";
-
-// Only create instance if key exists to prevent immediate errors, though functionality will require it.
-const ai = new GoogleGenAI({ apiKey: apiKey || "dummy_key_to_prevent_crash_if_missing" });
+// Initialize Gemini Client strictly following @google/genai coding guidelines.
+// Always use the named parameter and assume process.env.API_KEY is valid.
+// Fix: Use process.env.API_KEY directly as per guidelines
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
  * Edits an image using Gemini 2.5 Flash Image based on a text prompt.
@@ -19,11 +18,6 @@ export const editImageWithGemini = async (
   mimeType: string,
   prompt: string
 ): Promise<string | null> => {
-  if (!apiKey) {
-    console.error("Gemini API Key is missing");
-    return null;
-  }
-
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
@@ -73,29 +67,26 @@ export interface SearchResult {
 }
 
 /**
- * Generates text response using Gemini 2.5 Flash with Google Search Grounding.
+ * Generates text response using Gemini 3 Flash with Google Search Grounding.
  * @param prompt The user's question or prompt
  * @returns Object containing text response and grounding metadata
  */
 export const generateTextWithSearch = async (prompt: string): Promise<SearchResult> => {
-  if (!apiKey) {
-    console.error("Gemini API Key is missing");
-    return { text: "API Key is missing. Please check your configuration.", sources: [] };
-  }
-
   try {
+    // Fix: Use 'gemini-3-flash-preview' for basic text tasks with search as per model selection rules
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
       },
     });
 
+    // Fix: Ensure correct access to .text property on response
     const text = response.text || "No response generated.";
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
     
-    // Extract sources safely
+    // Extract sources safely from grounding metadata
     const sources = groundingChunks
       .map((chunk: any) => {
         if (chunk.web) {

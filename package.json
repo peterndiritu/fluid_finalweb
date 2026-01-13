@@ -16,7 +16,12 @@
     "@google/genai": "^1.33.0",
     "recharts": "2.12.7",
     "thirdweb": "5.54.0",
-    "canvas-confetti": "1.9.2"
+    "canvas-confetti": "1.9.2",
+    "@tanstack/react-query": "^5.90.16",
+    "viem": "^2.44.1",
+    "wagmi": "^3.3.2",
+    "@reown/appkit": "^1.8.16",
+    "@reown/appkit-adapter-wagmi": "^1.8.16"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

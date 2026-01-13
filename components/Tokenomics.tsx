@@ -7,7 +7,8 @@ import {
 import { getContract } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
 import { defineChain } from "thirdweb/chains";
-import { client } from "../client";
+// Fix: Correctly import thirdwebClient from ../client as it is the exported member
+import { thirdwebClient } from "../client";
 
 // --- Configuration ---
 // Placeholder address - replace with actual deployed contract
@@ -64,8 +65,9 @@ const allocationData = [
 ];
 
 const Tokenomics: React.FC = () => {
+  // Fix: Use thirdwebClient exported from client.ts
   const contract = getContract({
-    client,
+    client: thirdwebClient,
     chain: CHAIN,
     address: FLUID_TOKEN_ADDRESS,
   });
@@ -85,7 +87,8 @@ const Tokenomics: React.FC = () => {
   });
 
   // Data processing with requested values as defaults if contract read fails
-  const displayPrice = (!priceError && contractPrice) ? (Number(contractPrice) / 1e18).toFixed(4) : "0.0525";
+  // Updated fallback price to 1.00
+  const displayPrice = (!priceError && contractPrice) ? (Number(contractPrice) / 1e18).toFixed(4) : "1.00";
   const displayBurned = (!burnError && burnedAmount) ? Number(BigInt(burnedAmount) / BigInt(1e18)).toLocaleString() : "142,601";
   
   // Market Cap calculation (Price * 10M supply)

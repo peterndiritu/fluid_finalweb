@@ -98,141 +98,6 @@
         opacity: 1;
         transform: translateY(0) scale(1);
       }
-
-      /* Animated Outline Card - Replaces Backgrounds */
-      .animated-outline-card {
-        background: transparent !important; /* Force remove background */
-        position: relative;
-        border-radius: 1.5rem; /* Match rounded-3xl or 2xl */
-        overflow: hidden;
-      }
-
-      /* The rotating border effect */
-      .animated-outline-card::before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        z-index: -1;
-        background: conic-gradient(
-          from 0deg,
-          transparent 0deg,
-          transparent 90deg,
-          #06b6d4 180deg, /* Cyan */
-          transparent 270deg,
-          transparent 360deg
-        );
-        animation: rotate 4s linear infinite;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-      }
-
-      /* Inner mask to make it a border, not a full fill */
-      .animated-outline-card::after {
-        content: "";
-        position: absolute;
-        inset: 1px; /* Border thickness */
-        background: inherit; /* Inherits transparent */
-        border-radius: 1.5rem;
-        z-index: -1;
-      }
-
-      /* Only show outline when scrolled into view */
-      .animated-outline-card.in-view::before {
-        opacity: 1;
-      }
-
-      @keyframes rotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      /* Make sure content sits above pseudo elements */
-      .animated-outline-card > * {
-        position: relative;
-        z-index: 10;
-      }
-
-      /* --- Marquee Animation (Explicit CSS) --- */
-      @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-      }
-      
-      .animate-marquee {
-        animation: marquee 30s linear infinite;
-        width: max-content; /* Critical for calculating translate percentage correctly */
-        will-change: transform;
-      }
-
-      /* Optional: Pause on hover */
-      .group:hover .animate-marquee {
-        animation-play-state: paused;
-      }
-
-      /* --- Flow Animations for HowItWorks --- */
-      @keyframes flowY {
-        0% { top: 0; opacity: 0; }
-        20% { opacity: 1; }
-        80% { opacity: 1; }
-        100% { top: 100%; opacity: 0; }
-      }
-      @keyframes flowX {
-        0% { left: 0; opacity: 0; }
-        20% { opacity: 1; }
-        80% { opacity: 1; }
-        100% { left: 100%; opacity: 0; }
-      }
-      @keyframes flowXReverse {
-        0% { right: 0; opacity: 0; }
-        20% { opacity: 1; }
-        80% { opacity: 1; }
-        100% { right: 100%; opacity: 0; }
-      }
-      
-      .flow-particle-y {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background-color: #34d399; /* Emerald 400 */
-        box-shadow: 0 0 8px #34d399;
-        animation: flowY 2s infinite linear;
-        z-index: 20;
-        pointer-events: none;
-      }
-
-      /* Cyan variant for shards */
-      .flow-particle-y.cyan {
-        background-color: #22d3ee; /* Cyan 400 */
-        box-shadow: 0 0 8px #22d3ee;
-      }
-      
-      .flow-particle-x {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background-color: #34d399;
-        box-shadow: 0 0 8px #34d399;
-        animation: flowX 2s infinite linear;
-        z-index: 20;
-        pointer-events: none;
-      }
-      
-      .flow-particle-x.cyan {
-        background-color: #22d3ee;
-        box-shadow: 0 0 8px #22d3ee;
-      }
-
-      .delay-200 { animation-delay: 0.2s; }
-      .delay-500 { animation-delay: 0.5s; }
-      .delay-700 { animation-delay: 0.7s; }
-      .delay-1000 { animation-delay: 1s; }
-
     </style>
   <script type="importmap">
 {
@@ -251,7 +116,15 @@
     "thirdweb/wallets": "https://esm.sh/thirdweb@5.54.0/wallets?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/chains": "https://esm.sh/thirdweb@5.54.0/chains?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/utils": "https://esm.sh/thirdweb@5.54.0/utils?deps=react@18.3.1,react-dom@18.3.1",
-    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2"
+    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2",
+    "@reown/appkit": "https://esm.sh/@reown/appkit@1.1.0",
+    "@reown/appkit/react": "https://esm.sh/@reown/appkit@1.1.0/react",
+    "@reown/appkit-adapter-wagmi": "https://esm.sh/@reown/appkit-adapter-wagmi@1.1.0",
+    "wagmi": "https://esm.sh/wagmi@2.12.7",
+    "wagmi/chains": "https://esm.sh/wagmi@2.12.7/chains",
+    "@wagmi/core": "https://esm.sh/@wagmi/core@2.13.4",
+    "viem": "https://esm.sh/viem@2.21.0",
+    "@tanstack/react-query": "https://esm.sh/@tanstack/react-query@5.51.21"
   }
 }
 </script>
@@ -281,7 +154,7 @@
 
         // Function to attach observer to new elements (useful if React renders them later)
         const observeElements = () => {
-          const elements = document.querySelectorAll('.scroll-card, .animated-outline-card');
+          const elements = document.querySelectorAll('.scroll-card');
           elements.forEach(el => observer.observe(el));
         };
 

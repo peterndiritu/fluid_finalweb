@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, Download } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { ConnectButton } from "thirdweb/react";
-import { client, wallets } from "../client";
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -58,12 +56,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
 
   const toggleMobileSubmenu = (menu: string) => {
     setMobileSubmenu(mobileSubmenu === menu ? null : menu);
-  };
-
-  const appMetadata = {
-    name: "Fluid",
-    url: "https://fluid.finance",
-    description: "Next-gen crypto presale platform and blockchain hosting.",
   };
 
   const navStructure = [
@@ -168,15 +160,8 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <div className="h-6 w-px bg-slate-300 dark:bg-slate-800 mx-1"></div>
-            <ConnectButton 
-              client={client} 
-              wallets={wallets}
-              theme={theme}
-              appMetadata={appMetadata}
-              connectButton={{
-                className: "!bg-slate-900 dark:!bg-white !text-white dark:!text-slate-900 !rounded-xl !px-5 !py-2 !text-xs !font-bold !h-10 hover:!opacity-90 transition-opacity !border-none"
-              }}
-            />
+            {/* Reown AppKit Button */}
+            <appkit-button size="sm" balance="hide" />
           </div>
 
           {/* Mobile menu button */}
@@ -248,15 +233,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
 
             <div className="border-t border-slate-200 dark:border-white/10 my-4 pt-6 space-y-4">
               <div className="flex justify-center">
-                <ConnectButton 
-                  client={client} 
-                  wallets={wallets}
-                  theme={theme}
-                  appMetadata={appMetadata}
-                  connectButton={{
-                    className: "!w-full !bg-slate-900 dark:!bg-white !text-white dark:!text-slate-900 !rounded-xl !py-4 !text-sm !font-bold !h-12 !border-none shadow-lg"
-                  }}
-                />
+                <appkit-button />
               </div>
               <button 
                 onClick={() => handleLinkClick('buy')}
