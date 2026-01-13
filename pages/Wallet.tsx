@@ -8,10 +8,15 @@ import {
 
 const WalletPage: React.FC = () => {
   const FluidLogo = ({ className = "w-8 h-8" }: { className?: string }) => (
-    <svg viewBox="0 0 100 100" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
-        <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" />
-        <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
-        <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
+    <svg viewBox="0 0 100 100" className={className} xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="walletLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#10b981" />
+          </linearGradient>
+        </defs>
+        <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" fill="url(#walletLogoGradient)" />
+        <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" fill="url(#walletLogoGradient)" />
     </svg>
   );
 
@@ -186,7 +191,7 @@ const WalletPage: React.FC = () => {
                               <div className="flex justify-between items-center">
                                  <span className="text-3xl font-bold text-cyan-400">4,592</span>
                                  <button className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-slate-700">
-                                    <FluidLogo className="w-5 h-5 text-cyan-400" />
+                                    <FluidLogo className="w-5 h-5" />
                                     <span className="font-bold text-sm">FLD</span>
                                     <ChevronRight size={14} />
                                  </button>
@@ -231,7 +236,7 @@ const WalletPage: React.FC = () => {
                         <div className="relative w-full aspect-[1.6/1] rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 p-5 shadow-2xl border-t border-white/10 mb-8 overflow-hidden">
                            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 rounded-full blur-2xl -mr-8 -mt-8"></div>
                            <div className="flex justify-between items-start mb-6 relative z-10">
-                              <FluidLogo className="w-8 h-8 text-white" />
+                              <FluidLogo className="w-8 h-8" />
                               <span className="text-white/80 font-bold italic">Debit</span>
                            </div>
                            <div className="text-white/90 font-mono text-lg tracking-widest mb-4 relative z-10">
