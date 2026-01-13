@@ -12,7 +12,7 @@ import { defineChain } from "thirdweb/chains";
 import { thirdwebClient } from "../client";
 
 // --- Configuration ---
-const FLUID_TOKEN_ADDRESS = "0x0000000000000000000000000000000000000000"; 
+const FLUID_TOKEN_ADDRESS = "0xec9123Aa60651ceee7c0E084c884Cd33478c92a5"; 
 const BURN_ADDRESS = "0x000000000000000000000000000000000000dEaD";
 const CHAIN = defineChain(1);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown, ShoppingCart } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { ConnectButton } from "thirdweb/react";
 import { thirdwebClient } from "../client";
@@ -65,11 +65,16 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       label: 'Products',
       children: [
         { label: 'Fluid Blockchain', action: () => handleLinkClick('blockchain') },
+        { label: 'Fluid Presale', action: () => handleLinkClick('buy') },
         { label: 'Wallet', action: () => handleLinkClick('wallet') },
         { label: 'Fluid DEX', action: () => handleLinkClick('dex') },
         { label: 'Fluid Crypto Cards', action: () => handleLinkClick('cards') },
         { label: 'Fluid Token', action: () => handleLinkClick('token') },
       ]
+    },
+    { 
+      label: 'Presale', 
+      action: () => handleLinkClick('buy') 
     },
     { 
       label: 'Hosting', 
@@ -127,7 +132,11 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                 ) : (
                   <button 
                     onClick={item.action} 
-                    className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 font-bold text-xs px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all"
+                    className={`font-bold text-xs px-3 py-2 rounded-lg transition-all ${
+                      item.label === 'Presale' 
+                        ? 'text-emerald-500 hover:text-emerald-400 bg-emerald-500/5 hover:bg-emerald-500/10' 
+                        : 'text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5'
+                    }`}
                   >
                     {item.label}
                   </button>
@@ -154,6 +163,14 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
 
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center gap-3">
+            <button 
+              onClick={() => handleLinkClick('buy')}
+              className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-500/10 group"
+            >
+              <ShoppingCart size={14} className="group-hover:scale-110 transition-transform" />
+              Buy FLUID
+            </button>
+            <div className="h-6 w-px bg-slate-300 dark:bg-slate-800 mx-1"></div>
             <button 
               onClick={toggleTheme}
               className="flex items-center justify-center w-9 h-9 rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-white/20 transition-colors"
@@ -229,7 +246,11 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                       item.action();
                       setIsMenuOpen(false);
                     }}
-                    className="w-full text-left text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 block px-4 py-3 rounded-xl text-sm font-bold"
+                    className={`w-full text-left block px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                      item.label === 'Presale' 
+                        ? 'text-emerald-500 bg-emerald-500/10' 
+                        : 'text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                    }`}
                   >
                     {item.label}
                   </button>

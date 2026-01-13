@@ -18,7 +18,7 @@ import { createWallet } from "thirdweb/wallets";
 import { thirdwebClient } from "../client";
 
 // --- Configuration ---
-const PRESALE_CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890";
+const PRESALE_CONTRACT_ADDRESS = "0xec9123Aa60651ceee7c0E084c884Cd33478c92a5";
 const FALLBACK_FLUID_PRICE = 1.0; // 1 USDT per FLUID
 
 interface PaymentToken {
