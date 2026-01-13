@@ -30,7 +30,7 @@ function App() {
     createWallet("io.rabby"),
   ], []);
 
-  // Initiate global auto-connection to restore sessions on mount
+  // Global auto-connection (silent restoration)
   useAutoConnect({
     client: thirdwebClient,
     wallets: wallets
@@ -60,7 +60,6 @@ function App() {
     <div 
       className="min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-emerald-500/30 transition-colors duration-300 relative"
     >
-      
       {/* Technological Hosting Grid Background */}
       <div className="fixed inset-0 bg-tech-grid pointer-events-none z-0 opacity-100"></div>
       
